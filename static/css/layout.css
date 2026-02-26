@@ -1,8 +1,8 @@
 header {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    background: linear-gradient(135deg, #1a2634 0%, #0f1a24 100%);
     color: white;
     text-align: center;
-    padding: 2rem 1rem;
+    padding: 2.5rem 1rem;
     box-shadow: var(--sombra-media);
     position: relative;
     overflow: hidden;
@@ -11,91 +11,97 @@ header {
 header::before {
     content: "🌊";
     position: absolute;
-    bottom: 0;
-    left: 0;
-    font-size: 6rem;
+    bottom: -10px;
+    left: -20px;
+    font-size: 8rem;
     opacity: 0.1;
-    transform: translateY(30%);
+    transform: rotate(-10deg);
 }
 
 header::after {
     content: "⛰️";
     position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 5rem;
+    top: -20px;
+    right: -10px;
+    font-size: 7rem;
     opacity: 0.1;
-    transform: rotate(10deg) translateY(-20%);
+    transform: rotate(15deg);
 }
 
 header h1 {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     margin-bottom: 0.5rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: -0.02em;
 }
 
 header p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     opacity: 0.9;
+    font-weight: 300;
 }
 
 .modulos-nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--cor-borda);
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(208, 215, 222, 0.5);
     position: sticky;
     top: 0;
     z-index: 10;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
 }
 
 .modulo-btn {
-    padding: 0.75rem 2rem;
+    padding: 0.6rem 1.8rem;
     border: none;
     border-radius: 40px;
-    background: white;
+    background: rgba(255,255,255,0.9);
     color: var(--cor-texto);
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: var(--sombra-suave);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     border: 1px solid transparent;
+    letter-spacing: 0.3px;
 }
 
 .modulo-btn:hover {
     transform: translateY(-2px);
-    box-shadow: var(--sombra-media);
+    background: white;
+    box-shadow: var(--sombra-suave);
     border-color: var(--cor-borda);
 }
 
 .modulo-btn.ativo {
-    background: #1e293b;
+    background: var(--cor-texto);
     color: white;
-    border-color: #1e293b;
-    box-shadow: 0 4px 12px rgba(30, 41, 59, 0.3);
+    border-color: var(--cor-texto);
+    box-shadow: 0 6px 14px rgba(26, 38, 52, 0.25);
 }
 
 /* Cores de fundo para abas ativas (mantendo a identidade) */
 .modulo-btn[data-modulo="escaleta"].ativo { background: var(--cor-escaleta); border-color: var(--cor-escaleta); }
 .modulo-btn[data-modulo="jornalismo"].ativo { background: var(--cor-jornalismo); border-color: var(--cor-jornalismo); }
 .modulo-btn[data-modulo="esportes"].ativo { background: var(--cor-esportes); border-color: var(--cor-esportes); }
-.modulo-btn[data-modulo="estudios"].ativo { background: var(--cor-estudios); border-color: var(--cor-estudios); color: #1e293b; }
+.modulo-btn[data-modulo="estudios"].ativo { background: var(--cor-estudios); border-color: var(--cor-estudios); color: #1e2b3a; }
 .modulo-btn[data-modulo="financeiro"].ativo { background: var(--cor-financeiro); border-color: var(--cor-financeiro); }
 
 #conteudo-modulo {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 2rem auto;
-    padding: 0 1rem;
+    padding: 0 1.5rem;
 }
 
 .loading {
     text-align: center;
     font-size: 1.2rem;
     color: var(--cor-texto-secundario);
+    padding: 3rem;
 }

@@ -7,31 +7,29 @@
 }
 
 :root {
-    /* Cores principais */
-    --cor-fundo: #f5f7fa;
+    /* Cores principais - tons de cinza inspirados em aço escovado */
+    --cor-fundo: #f2f4f8;
     --cor-superficie: #ffffff;
-    --cor-texto: #1e293b;
-    --cor-texto-secundario: #475569;
-    --cor-borda: #e2e8f0;
-    
-    /* Cores dos módulos (versões mais suaves) */
-    --cor-escaleta: #a78bfa;      /* roxo lavanda */
-    --cor-jornalismo: #60a5fa;    /* azul claro */
-    --cor-esportes: #4ade80;      /* verde suave */
-    --cor-estudios: #fbbf24;      /* dourado */
-    --cor-financeiro: #f87171;    /* vermelho suave */
-    
-    /* Destaques */
+    --cor-texto: #1e2b3a;
+    --cor-texto-secundario: #4a5a6e;
+    --cor-borda: #d0d7de;
     --cor-dourado: #c9a959;
     --cor-azul-carioca: #2c7da0;
+    
+    /* Cores dos módulos (versões mais suaves) */
+    --cor-escaleta: #a78bfa;
+    --cor-jornalismo: #60a5fa;
+    --cor-esportes: #4ade80;
+    --cor-estudios: #fbbf24;
+    --cor-financeiro: #f87171;
     
     /* Tipografia */
     --fonte-principal: 'Inter', sans-serif;
     
     /* Sombras e bordas */
-    --sombra-suave: 0 4px 6px -1px rgb(0 0 0 / 0.05);
-    --sombra-media: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-    --borda-raio: 12px;
+    --sombra-suave: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --sombra-media: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --borda-raio: 16px;
 }
 
 body {

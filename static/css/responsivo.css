@@ -24,7 +24,7 @@
     }
 
     header h1 {
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
 }
 
@@ -34,7 +34,7 @@
     }
 
     .tabela {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 
     .tabela th, .tabela td {
@@ -42,6 +42,6 @@
     }
 
     header::before, header::after {
-        font-size: 4rem;
+        font-size: 5rem;
     }
 }
