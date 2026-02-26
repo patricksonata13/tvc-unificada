@@ -1,4 +1,7 @@
-# data/escaleta.py - 20 projetos
+#!/bin/bash
+# Atualiza o arquivo de dados da escaleta com os novos projetos
+cat > modulos/escaleta/escaleta.py << 'INNEREOF'
+# data/escaleta.py - 19 projetos
 
 ESCALETA_PROJETOS = [
     {"id": 1, "nome": "CATIÇO", "tipo": "Filme", "status": "Pós-produção", "progresso": 90,
@@ -40,25 +43,42 @@ ESCALETA_PROJETOS = [
     {"id": 13, "nome": "UM VERÃO EM ARRAIAL", "tipo": "Mini Novela", "status": "Roteiro", "progresso": 30,
      "visao": "Litoral", "responsavel": "João Paulo", "orcamento": 380000,
      "descricao": "Paixões intensas em Arraial do Cabo."},
-    {"id": 14, "nome": "MAGOS DA PRAÇA", "tipo": "Mini Novela", "status": "Desenvolvimento", "progresso": 20,
-     "visao": "Zona Oeste", "responsavel": "Cláudia Abreu", "orcamento": 290000,
+    {"id": 14, "nome": "ESTELIONATÁRIOS DIGITAIS", "tipo": "Série", "status": "Desenvolvimento", "progresso": 20,
+     "visao": "Zona Sul", "responsavel": "Roberta Campos", "orcamento": 900000,
      "descricao": "Estelionatários digitais veem império ruir."},
-    {"id": 15, "nome": "FUNK ZONA SUL", "tipo": "Mini Novela", "status": "Roteiro", "progresso": 25,
-     "visao": "Zona Sul", "responsavel": "Rafaela Santos", "orcamento": 310000,
-     "descricao": "Jovem funkeiro tenta conquistar espaço na Zona Sul."},
-    {"id": 16, "nome": "ZONA OESTE", "tipo": "Documentário", "status": "Pesquisa", "progresso": 15,
+    {"id": 15, "nome": "MÃOS QUE CURAM", "tipo": "Filme", "status": "Roteiro", "progresso": 15,
+     "visao": "Comunidades", "responsavel": "Lázaro Ramos", "orcamento": 1100000,
+     "descricao": "Benzedeira do subúrbio enfrenta desafios da fé."},
+    {"id": 16, "nome": "FUNK-SE", "tipo": "Série", "status": "Desenvolvimento", "progresso": 25,
+     "visao": "Comunidades", "responsavel": "Tatiana Issa", "orcamento": 1300000,
+     "descricao": "Série documental sobre a história do funk carioca."},
+    {"id": 17, "nome": "CIDADE PARTIDA", "tipo": "Documentário", "status": "Pesquisa", "progresso": 10,
      "visao": "Zona Oeste", "responsavel": "Eduardo Coutinho", "orcamento": 500000,
      "descricao": "Retrato das múltiplas realidades da Zona Oeste carioca."},
-    {"id": 17, "nome": "CORINHO DE FOGO 2", "tipo": "Filme", "status": "Ideação", "progresso": 5,
-     "visao": "Cultural", "responsavel": "Marcelo Santos", "orcamento": 600000,
-     "descricao": "Sequência do sucesso gospel."},
     {"id": 18, "nome": "LATA DE TINTA", "tipo": "Filme Longa", "status": "Desenvolvimento", "progresso": 10,
      "visao": "Zona Norte", "responsavel": "Fernanda Montenegro", "orcamento": 1200000,
      "descricao": "Um casal recém-separado precisa voltar à casa onde moraram para pintá-la e entregá-la, revivendo todos os momentos de 10 anos juntos."},
     {"id": 19, "nome": "TERRENO DE FAMÍLIA", "tipo": "Documentário", "status": "Pesquisa", "progresso": 5,
      "visao": "Memória", "responsavel": "Eduardo Coutinho Jr.", "orcamento": 450000,
-     "descricao": "Documentário sobre as brigas de uma família por herança de um terreno, explorando conflitos e memórias."},
-    {"id": 20, "nome": "RETETÉ, O FILME", "tipo": "Comédia", "status": "Roteiro", "progresso": 15,
-     "visao": "Humor", "responsavel": "Paulo Gustavo (homenagem)", "orcamento": 3500000,
-     "descricao": "Um cantor gospel de corinho de fogo se envolve em confusões ao tentar lançar seu primeiro álbum secular."},
+     "descricao": "Documentário sobre as brigas de uma família por herança de um terreno, explorando conflitos e memórias."}
 ]
+INNEREOF
+
+# Atualiza o banco de dados (insere ou atualiza os projetos)
+python3 << 'PYEOF'
+import sqlite3
+from modulos.escaleta.escaleta import ESCALETA_PROJETOS
+conn = sqlite3.connect('tvc.db')
+c = conn.cursor()
+for p in ESCALETA_PROJETOS:
+    c.execute('''
+        INSERT OR REPLACE INTO escaleta 
+        (id, nome, tipo, status, progresso, visao, responsavel, orcamento, descricao)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (p['id'], p['nome'], p['tipo'], p['status'], p['progresso'], p['visao'], p['responsavel'], p['orcamento'], p['descricao']))
+conn.commit()
+conn.close()
+print("Banco de dados atualizado com sucesso.")
+PYEOF
+
+echo "Projetos adicionados/atualizados. Reinicie o servidor se necessário."
