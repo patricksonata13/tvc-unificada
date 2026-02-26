@@ -1,0 +1,208 @@
+// Estado da aplicação
+let dadosCompletos = null;
+let moduloAtivo = 'escaleta';
+
+// Elementos DOM
+const botoesModulo = document.querySelectorAll('.modulo-btn');
+const conteudoModulo = document.getElementById('conteudo-modulo');
+
+// Busca todos os dados da API assim que a página carrega
+async function carregarDados() {
+    try {
+        const resposta = await fetch('/api/tudo');
+        dadosCompletos = await resposta.json();
+        console.log('Dados carregados:', dadosCompletos);
+        exibirModulo(moduloAtivo);
+    } catch (erro) {
+        conteudoModulo.innerHTML = '<p class="loading">Erro ao carregar dados. Tente novamente.</p>';
+        console.error(erro);
+    }
+}
+
+// Exibe o conteúdo do módulo selecionado
+function exibirModulo(modulo) {
+    if (!dadosCompletos) {
+        conteudoModulo.innerHTML = '<p class="loading">Carregando...</p>';
+        return;
+    }
+
+    let html = '';
+
+    switch (modulo) {
+        case 'escaleta':
+            html = gerarHtmlEscaleta(dadosCompletos.escaleta);
+            break;
+        case 'jornalismo':
+            html = gerarHtmlJornalismo(dadosCompletos.jornalismo);
+            break;
+        case 'esportes':
+            html = gerarHtmlEsportes(dadosCompletos);
+            break;
+        case 'estudios':
+            html = gerarHtmlEstudios(dadosCompletos.estudios);
+            break;
+        case 'financeiro':
+            html = gerarHtmlFinanceiro(dadosCompletos.financeiro);
+            break;
+        default:
+            html = '<p>Módulo não encontrado.</p>';
+    }
+
+    conteudoModulo.innerHTML = html;
+}
+
+function gerarHtmlEscaleta(projetos) {
+    if (!projetos || projetos.length === 0) return '<p>Nenhum projeto encontrado.</p>';
+
+    let html = '<div class="card-container">';
+    projetos.forEach(proj => {
+        html += `
+            <div class="card">
+                <h3>${proj.nome}</h3>
+                <p><strong>Tipo:</strong> ${proj.tipo}</p>
+                <p><strong>Status:</strong> ${proj.status}</p>
+                <p><strong>Progresso:</strong> ${proj.progresso}%</p>
+                <p><strong>Responsável:</strong> ${proj.responsavel}</p>
+                <p><strong>Visão:</strong> ${proj.visao}</p>
+                <p><strong>Orçamento:</strong> R$ ${proj.orcamento?.toLocaleString()}</p>
+                <p><em>${proj.descricao}</em></p>
+            </div>
+        `;
+    });
+    html += '</div>';
+    return html;
+}
+
+function gerarHtmlJornalismo(noticias) {
+    if (!noticias || noticias.length === 0) return '<p>Nenhuma notícia encontrada.</p>';
+
+    let html = '<div class="card-container">';
+    noticias.forEach(not => {
+        html += `
+            <div class="card">
+                <h3>${not.titulo}</h3>
+                <p><strong>Categoria:</strong> ${not.categoria}</p>
+                <p><strong>Data:</strong> ${not.data}</p>
+                <p><strong>Autor:</strong> ${not.autor}</p>
+                <p>${not.conteudo}</p>
+                <p><small>Visualizações: ${not.views}</small></p>
+            </div>
+        `;
+    });
+    html += '</div>';
+    return html;
+}
+
+function gerarHtmlEsportes(dados) {
+    let html = '<h2>Classificação Brasileirão</h2>';
+    if (dados.brasileirao && dados.brasileirao.length > 0) {
+        html += '<table class="tabela"><tr><th>Pos</th><th>Time</th><th>Pontos</th><th>Jogos</th><th>Vitórias</th></tr>';
+        dados.brasileirao.forEach(time => {
+            html += `<tr><td>${time.pos}</td><td>${time.time}</td><td>${time.pontos}</td><td>${time.jogos}</td><td>${time.vitorias}</td></tr>`;
+        });
+        html += '</table>';
+    } else {
+        html += '<p>Sem dados do Brasileirão.</p>';
+    }
+
+    html += '<h2 style="margin-top:2rem;">Classificação Carioca</h2>';
+    if (dados.carioca && dados.carioca.length > 0) {
+        html += '<table class="tabela"><tr><th>Pos</th><th>Time</th><th>Pontos</th></tr>';
+        dados.carioca.forEach(time => {
+            html += `<tr><td>${time.pos}</td><td>${time.time}</td><td>${time.pontos}</td></tr>`;
+        });
+        html += '</table>';
+    } else {
+        html += '<p>Sem dados do Carioca.</p>';
+    }
+
+    return html;
+}
+
+function gerarHtmlEstudios(estudios) {
+    let html = '<h2>Equipe</h2>';
+    if (estudios.equipe && estudios.equipe.length > 0) {
+        html += '<div class="card-container">';
+        estudios.equipe.forEach(pessoa => {
+            html += `
+                <div class="card">
+                    <h3>${pessoa.nome}</h3>
+                    <p><strong>Função:</strong> ${pessoa.funcao}</p>
+                    <p><strong>Área:</strong> ${pessoa.area}</p>
+                    <p><strong>Disponibilidade:</strong> ${pessoa.disponibilidade}</p>
+                    <p><strong>Projetos:</strong> ${pessoa.projetos?.join(', ')}</p>
+                </div>
+            `;
+        });
+        html += '</div>';
+    } else {
+        html += '<p>Nenhum membro de equipe encontrado.</p>';
+    }
+
+    html += '<h2 style="margin-top:2rem;">Equipamentos</h2>';
+    if (estudios.equipamentos && estudios.equipamentos.length > 0) {
+        html += '<div class="card-container">';
+        estudios.equipamentos.forEach(eq => {
+            html += `
+                <div class="card">
+                    <h3>${eq.nome}</h3>
+                    <p><strong>Tipo:</strong> ${eq.tipo}</p>
+                    <p><strong>Quantidade:</strong> ${eq.quantidade} (disponíveis: ${eq.disponiveis})</p>
+                    <p><strong>Status:</strong> ${eq.status}</p>
+                    <p><strong>Localização:</strong> ${eq.localizacao}</p>
+                </div>
+            `;
+        });
+        html += '</div>';
+    } else {
+        html += '<p>Nenhum equipamento encontrado.</p>';
+    }
+
+    html += '<h2 style="margin-top:2rem;">Materiais</h2>';
+    if (estudios.materiais && estudios.materiais.length > 0) {
+        html += '<div class="card-container">';
+        estudios.materiais.forEach(mat => {
+            html += `
+                <div class="card">
+                    <h3>${mat.nome}</h3>
+                    <p><strong>Tipo:</strong> ${mat.tipo}</p>
+                    <p><strong>Quantidade:</strong> ${mat.quantidade} (disponíveis: ${mat.disponiveis})</p>
+                </div>
+            `;
+        });
+        html += '</div>';
+    } else {
+        html += '<p>Nenhum material encontrado.</p>';
+    }
+
+    return html;
+}
+
+function gerarHtmlFinanceiro(financeiro) {
+    if (!financeiro || Object.keys(financeiro).length === 0) {
+        return '<p>Dados financeiros não disponíveis.</p>';
+    }
+    // Como o financeiro é um dicionário, exibimos como tabela
+    let html = '<table class="tabela"><tr><th>Chave</th><th>Valor</th></tr>';
+    for (let [chave, valor] of Object.entries(financeiro)) {
+        html += `<tr><td>${chave}</td><td>${JSON.stringify(valor)}</td></tr>`;
+    }
+    html += '</table>';
+    return html;
+}
+
+// Event listeners para os botões de módulo
+botoesModulo.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Remove a classe ativo de todos
+        botoesModulo.forEach(b => b.classList.remove('ativo'));
+        // Adiciona no clicado
+        btn.classList.add('ativo');
+        // Atualiza módulo ativo e exibe
+        moduloAtivo = btn.dataset.modulo;
+        exibirModulo(moduloAtivo);
+    });
+});
+
+// Inicia a aplicação carregando os dados
+carregarDados();

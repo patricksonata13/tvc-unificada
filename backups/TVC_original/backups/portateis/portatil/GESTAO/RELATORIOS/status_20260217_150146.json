@@ -1,0 +1,75 @@
+{
+  "data": "2026-02-17 15:01:46",
+  "hardware": {
+    "cpu": 0.0,
+    "memoria": 65.4,
+    "disco": 41.1
+  },
+  "financeiro": {
+    "equity_brl": 153197.25,
+    "receitas": [],
+    "despesas": [],
+    "projetos": {},
+    "ultima_atualizacao": "2026-02-17T15:30:00"
+  },
+  "projetos": {
+    "projetos": [
+      {
+        "id": 1,
+        "nome": "CATI\u00c7O",
+        "tipo": "Filme",
+        "status": "P\u00f3s-produ\u00e7\u00e3o",
+        "progresso": 90,
+        "visao": "\ud83c\udfd8\ufe0f Comunidades",
+        "responsavel": "Carlos Alberto",
+        "orcamento": 800000,
+        "inicio": "2025-01-15",
+        "previsao": "2026-06-30"
+      },
+      {
+        "id": 2,
+        "nome": "TEU SAMBA",
+        "tipo": "Novela",
+        "status": "Pr\u00e9-produ\u00e7\u00e3o",
+        "progresso": 30,
+        "visao": "\ud83c\udfad Cultural",
+        "responsavel": "Ana Paula",
+        "orcamento": 410000,
+        "inicio": "2025-08-15",
+        "previsao": "2026-06-05"
+      },
+      {
+        "id": 3,
+        "nome": "TR\u00caM",
+        "tipo": "S\u00e9rie",
+        "status": "Desenvolvimento",
+        "progresso": 45,
+        "visao": "\ud83c\udfd8\ufe0f+\ud83c\udfad+\ud83c\udfac",
+        "responsavel": "Mariana Santos",
+        "orcamento": 1200000,
+        "inicio": "2024-09-01",
+        "previsao": "2026-08-15"
+      }
+    ],
+    "categorias": [
+      "Novela",
+      "S\u00e9rie",
+      "Filme",
+      "Jornal",
+      "Esporte",
+      "Programa"
+    ],
+    "status": [
+      "Ideia",
+      "Desenvolvimento",
+      "Pr\u00e9-produ\u00e7\u00e3o",
+      "Produ\u00e7\u00e3o",
+      "P\u00f3s-produ\u00e7\u00e3o",
+      "Finalizado"
+    ]
+  },
+  "videos": {
+    "brutos": 2,
+    "finalizados": 0
+  }
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard TVC</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial; background: #f4f4f4; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { text-align: center; }
+        .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        canvas { background: white; border-radius: 8px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Dashboard TVC</h1>
+        <div class="charts">
+            <div>
+                <h3>Projetos por Status</h3>
+                <canvas id="statusChart"></canvas>
+            </div>
+            <div>
+                <h3>Notícias por Categoria</h3>
+                <canvas id="categoriaChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function carregarDados() {
+            const resp = await fetch('/api/tudo');
+            const data = await resp.json();
+            return data;
+        }
+
+        async function criarGraficos() {
+            const dados = await carregarDados();
+
+            // Status dos projetos
+            const statusCount = {};
+            dados.escaleta.forEach(p => {
+                statusCount[p.status] = (statusCount[p.status] || 0) + 1;
+            });
+
+            new Chart(document.getElementById('statusChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(statusCount),
+                    datasets: [{
+                        label: 'Projetos',
+                        data: Object.values(statusCount),
+                        backgroundColor: 'rgba(102, 126, 234, 0.6)'
+                    }]
+                }
+            });
+
+            // Categorias das notícias
+            const catCount = {};
+            dados.jornalismo.forEach(n => {
+                catCount[n.categoria] = (catCount[n.categoria] || 0) + 1;
+            });
+
+            new Chart(document.getElementById('categoriaChart'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(catCount),
+                    datasets: [{
+                        data: Object.values(catCount),
+                        backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff']
+                    }]
+                }
+            });
+        }
+
+        criarGraficos();
+    </script>
+</body>
+</html>

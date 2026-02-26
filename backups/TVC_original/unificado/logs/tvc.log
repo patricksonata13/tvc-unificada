@@ -1,0 +1,37 @@
+2026-02-25 14:23:00,990 - root - ERROR - ❌ Erro na importação: cannot import name 'EQUIPE' from 'estudios' (/Users/macbookair/TVC/unificado/data/estudios.py)
+2026-02-25 14:23:01,005 - root - INFO - 🚀 Iniciando TVC Unificado na porta 5000
+2026-02-25 14:23:01,478 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.107:5000
+2026-02-25 14:23:01,479 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2026-02-25 14:23:01,482 - werkzeug - INFO -  * Restarting with stat
+2026-02-25 14:23:01,787 - root - ERROR - ❌ Erro na importação: cannot import name 'EQUIPE' from 'estudios' (/Users/macbookair/TVC/unificado/data/estudios.py)
+2026-02-25 14:23:01,802 - root - INFO - 🚀 Iniciando TVC Unificado na porta 5000
+2026-02-25 14:23:01,889 - werkzeug - WARNING -  * Debugger is active!
+2026-02-25 14:23:01,932 - werkzeug - INFO -  * Debugger PIN: 144-029-473
+2026-02-25 14:23:04,559 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:23:04] "GET / HTTP/1.1" 200 -
+2026-02-25 14:23:04,684 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:23:04] "GET /api/tudo HTTP/1.1" 200 -
+2026-02-25 14:23:06,192 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:23:06] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-25 14:24:46,836 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:24:46] "GET / HTTP/1.1" 200 -
+2026-02-25 14:24:46,929 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:24:46] "GET /api/tudo HTTP/1.1" 200 -
+2026-02-25 14:24:47,054 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:24:47] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-02-25 14:25:11,288 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:25:11] "GET / HTTP/1.1" 200 -
+2026-02-25 14:25:11,460 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:25:11] "GET /api/tudo HTTP/1.1" 200 -
+2026-02-25 14:30:57,028 - root - ERROR - ❌ Erro na importação: cannot import name 'EQUIPE' from 'estudios' (/Users/macbookair/TVC/unificado/data/estudios.py)
+2026-02-25 14:30:57,042 - root - INFO - 🚀 Iniciando TVC Unificado na porta 5000
+2026-02-25 14:30:57,468 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.107:5000
+2026-02-25 14:30:57,469 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2026-02-25 14:30:57,472 - werkzeug - INFO -  * Restarting with stat
+2026-02-25 14:30:57,765 - root - ERROR - ❌ Erro na importação: cannot import name 'EQUIPE' from 'estudios' (/Users/macbookair/TVC/unificado/data/estudios.py)
+2026-02-25 14:30:57,776 - root - INFO - 🚀 Iniciando TVC Unificado na porta 5000
+2026-02-25 14:30:57,872 - werkzeug - WARNING -  * Debugger is active!
+2026-02-25 14:30:57,941 - werkzeug - INFO -  * Debugger PIN: 144-029-473
+2026-02-25 14:30:59,625 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:30:59] "GET / HTTP/1.1" 200 -
+2026-02-25 14:30:59,687 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:30:59] "GET /api/tudo HTTP/1.1" 200 -
+2026-02-25 14:31:28,858 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:31:28] "GET / HTTP/1.1" 200 -
+2026-02-25 14:31:28,909 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:31:28] "GET /api/tudo HTTP/1.1" 200 -
+2026-02-25 14:48:38,789 - werkzeug - INFO - 127.0.0.1 - - [25/Feb/2026 14:48:38] "GET /api/jornalismo/noticias HTTP/1.1" 200 -

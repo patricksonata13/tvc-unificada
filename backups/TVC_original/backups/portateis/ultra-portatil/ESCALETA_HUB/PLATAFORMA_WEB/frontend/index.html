@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escaleta Hub - TVC Studios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Header com Escaleta Hub */
+        .hub-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-left: 5px solid #ffd700;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hub-header::before {
+            content: "ESCALETA HUB";
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 4em;
+            font-weight: bold;
+            color: rgba(255,215,0,0.1);
+            white-space: nowrap;
+        }
+        
+        .hub-title {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+        
+        .hub-subtitle {
+            font-size: 1.2em;
+            color: #ccc;
+            max-width: 600px;
+        }
+        
+        /* Fluxo da Escaleta */
+        .fluxo-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .fluxo-item {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .fluxo-item::after {
+            content: "→";
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffd700;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .fluxo-item:last-child::after {
+            display: none;
+        }
+        
+        .fluxo-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .fluxo-nome {
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .fluxo-desc {
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        
+        /* Categorias */
+        .categoria {
+            margin-bottom: 50px;
+        }
+        
+        .categoria-titulo {
+            font-size: 2em;
+            color: #ffd700;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .categoria-icone {
+            font-size: 1.5em;
+        }
+        
+        .projetos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .projeto-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 4px solid #ffd700;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .projeto-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255,215,0,0.2);
+        }
+        
+        .projeto-tipo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 5px 10px;
+            background: #333;
+            border-radius: 20px;
+            font-size: 0.8em;
+            color: #ffd700;
+        }
+        
+        .projeto-titulo {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #fff;
+            padding-right: 80px;
+        }
+        
+        .projeto-genero {
+            color: #ffd700;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .projeto-sinopse {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+        
+        .projeto-metadata {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+        
+        .projeto-duracao {
+            background: #333;
+            padding: 3px 10px;
+            border-radius: 15px;
+        }
+        
+        .projeto-classificacao {
+            background: #333;
+            padding: 3px 10px;
+            border-radius: 15px;
+        }
+        
+        .projeto-visao {
+            display: inline-block;
+            background: #2a2a2a;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            border: 1px solid #ffd700;
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-valor {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .stat-label {
+            color: #aaa;
+            margin-top: 5px;
+        }
+        
+        /* Escaleta Info */
+        .escaleta-info {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .info-item {
+            text-align: center;
+        }
+        
+        .info-item h3 {
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        
+        .info-item p {
+            color: #ccc;
+            font-size: 0.9em;
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            color: #666;
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Escaleta Hub -->
+        <div class="hub-header">
+            <div class="hub-title">ESCALETA HUB</div>
+            <div class="hub-subtitle">Empresa · Catálogo · Marca · 23 Projetos em Desenvolvimento</div>
+        </div>
+        
+        <!-- Fluxo Escaleta -->
+        <div class="fluxo-grid">
+            <div class="fluxo-item">
+                <div class="fluxo-icon">💡</div>
+                <div class="fluxo-nome">IDEIA</div>
+                <div class="fluxo-desc">Conceito Inicial</div>
+            </div>
+            <div class="fluxo-item">
+                <div class="fluxo-icon">📋</div>
+                <div class="fluxo-nome">ESCALETA ECO</div>
+                <div class="fluxo-desc">Cadastro · Gestão</div>
+            </div>
+            <div class="fluxo-item">
+                <div class="fluxo-icon">✍️</div>
+                <div class="fluxo-nome">ESCALETA PRO</div>
+                <div class="fluxo-desc">Roteiro · Criação</div>
+            </div>
+            <div class="fluxo-item">
+                <div class="fluxo-icon">🎬</div>
+                <div class="fluxo-nome">ESCALETA ESTÚDIO</div>
+                <div class="fluxo-desc">Produção · Piloto</div>
+            </div>
+            <div class="fluxo-item">
+                <div class="fluxo-icon">🌎</div>
+                <div class="fluxo-nome">MERCADO</div>
+                <div class="fluxo-desc">Streamings · TVs</div>
+            </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-grid" id="stats">
+            <div class="stat-card">
+                <div class="stat-valor" id="total-projetos">23</div>
+                <div class="stat-label">Projetos Totais</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-valor" id="total-longas">5</div>
+                <div class="stat-label">Longas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-valor" id="total-series">12</div>
+                <div class="stat-label">Séries/Minis</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-valor" id="total-outros">6</div>
+                <div class="stat-label">Outros Formatos</div>
+            </div>
+        </div>
+        
+        <!-- CATEGORIA: LONGAS-METRAGENS -->
+        <div class="categoria">
+            <div class="categoria-titulo">
+                <span class="categoria-icone">🎬</span>
+                LONGAS-METRAGENS (5)
+            </div>
+            <div class="projetos-grid" id="longas"></div>
+        </div>
+        
+        <!-- CATEGORIA: SÉRIES TRADICIONAIS -->
+        <div class="categoria">
+            <div class="categoria-titulo">
+                <span class="categoria-icone">📺</span>
+                SÉRIES (2)
+            </div>
+            <div class="projetos-grid" id="series"></div>
+        </div>
+        
+        <!-- CATEGORIA: MINI NOVELAS -->
+        <div class="categoria">
+            <div class="categoria-titulo">
+                <span class="categoria-icone">📱</span>
+                MINI NOVELAS (10)
+            </div>
+            <div class="projetos-grid" id="mini-novelas"></div>
+        </div>
+        
+        <!-- CATEGORIA: PROGRAMA -->
+        <div class="categoria">
+            <div class="categoria-titulo">
+                <span class="categoria-icone">🎙️</span>
+                PROGRAMA (1)
+            </div>
+            <div class="projetos-grid" id="programa"></div>
+        </div>
+        
+        <!-- CATEGORIA: TEATRO -->
+        <div class="categoria">
+            <div class="categoria-titulo">
+                <span class="categoria-icone">🎭</span>
+                TEATRO (1)
+            </div>
+            <div class="projetos-grid" id="teatro"></div>
+        </div>
+        
+        <!-- CATEGORIA: FORMATIVO -->
+        <div class="categoria">
+            <div class="categoria-titulo">
+                <span class="categoria-icone">🎓</span>
+                FORMATIVO (1)
+            </div>
+            <div class="projetos-grid" id="formativo"></div>
+        </div>
+        
+        <!-- CATEGORIA: PLATAFORMAS DIGITAIS -->
+        <div class="categoria">
+            <div class="categoria-titulo">
+                <span class="categoria-icone">📱</span>
+                PLATAFORMAS DIGITAIS (3)
+            </div>
+            <div class="projetos-grid" id="plataformas"></div>
+        </div>
+        
+        <!-- Escaleta Info -->
+        <div class="escaleta-info">
+            <div class="info-item">
+                <h3>ESCALETA HUB</h3>
+                <p>Empresa · Catálogo · Marca</p>
+            </div>
+            <div class="info-item">
+                <h3>ESCALETA ECO</h3>
+                <p>Gestão · Pipeline · Organização</p>
+            </div>
+            <div class="info-item">
+                <h3>ESCALETA PRO</h3>
+                <p>Criação · Roteiro · Desenvolvimento</p>
+            </div>
+            <div class="info-item">
+                <h3>ESCALETA ESTÚDIO</h3>
+                <p>Produção · Prototipagem · Execução</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== BANCO DE DADOS DOS 23 PROJETOS ==========
+        const projetos = {
+            longas: [
+                {
+                    titulo: "CATIÇO",
+                    genero: "Drama Afro-Surrealista/Ação",
+                    duracao: "1h15",
+                    classificacao: "18 anos",
+                    sinopse: "Cidade de Deus, anos 90. Jovem negro se torna bandido famoso roubando ônibus e carros, descobrindo a cruel alternância de poder na favela.",
+                    visao: "🏘️ Rio das Comunidades"
+                },
+                {
+                    titulo: "THE PUNCH",
+                    genero: "Comédia/Ação",
+                    duracao: "1h30",
+                    classificacao: "18 anos",
+                    sinopse: "Após um soco viral, homem tenta reconstruir sua vida longe da exposição e cancelamentos, em fuga caótica de sua própria fama indesejada.",
+                    visao: "🌳 Rio Zona Oeste"
+                },
+                {
+                    titulo: "A PRINCESA PERDIDA",
+                    genero: "Comédia/Romance",
+                    duracao: "1h40",
+                    classificacao: "16 anos",
+                    sinopse: "Kiaza, angolana rica, foge de casamento arranjado e encontra no Rio de Janeiro sua verdadeira libertação e novas possibilidades amorosas.",
+                    visao: "🏖️ Rio Zona Sul"
+                },
+                {
+                    titulo: "FESTA DA LAURA",
+                    genero: "Comédia",
+                    duracao: "1h30",
+                    classificacao: "16 anos",
+                    sinopse: "Mãe de Laura prepara a festa mais extravagante da Cidade de Deus para provar seu valor à comunidade e conquistar respeito social.",
+                    visao: "🏘️ Rio das Comunidades"
+                },
+                {
+                    titulo: "CORINHO DE FOGO",
+                    genero: "Comédia",
+                    duracao: "1h25",
+                    classificacao: "Livre",
+                    sinopse: "Cantor gospel sem unção tenta voltar ao estrelato fingindo dons espirituais, criando situações hilárias e reveladoras.",
+                    visao: "🎭 Rio Cultural"
+                }
+            ],
+            
+            series: [
+                {
+                    titulo: "TRÊM",
+                    genero: "Musical/Drama/Juventude",
+                    duracao: "8 eps x 30min",
+                    classificacao: "Livre",
+                    sinopse: "Jovens de diferentes periferias se encontram no trem e formam grupo de dança que vira símbolo cultural da cidade.",
+                    visao: "🏘️ Comunidades + 🎭 Cultural"
+                },
+                {
+                    titulo: "DIFERENTE MAS NEM TANTO",
+                    genero: "Aventura/Romance",
+                    duracao: "10 eps x 40min",
+                    classificacao: "Livre",
+                    sinopse: "Família negra de classe média alta de Madureira, dona de rede de lojas de automóveis, enfrenta preconceitos sem abrir mão de suas raízes.",
+                    visao: "🌳 Rio Zona Oeste"
+                }
+            ],
+            
+            miniNovelas: [
+                {
+                    titulo: "O MATUTO",
+                    genero: "Drama/Comédia/Crime",
+                    duracao: "20 eps x 15min",
+                    classificacao: "16 anos",
+                    sinopse: "Homem comum esconde identidade secreta: Matuto, envolvido com drogas, armas e esquemas clandestinos na favela.",
+                    visao: "🏘️ Rio das Comunidades"
+                },
+                {
+                    titulo: "COSTA VERDE",
+                    genero: "Drama/Histórico",
+                    duracao: "15 eps x 20min",
+                    classificacao: "14 anos",
+                    sinopse: "Conflito histórico ressurge entre praias e florestas, impactando gerações de moradores da Costa Verde.",
+                    visao: "🌊 Rio Litoral"
+                },
+                {
+                    titulo: "VIADUTO",
+                    genero: "Afro-Futurista",
+                    duracao: "12 eps x 25min",
+                    classificacao: "16 anos",
+                    sinopse: "Sob o viaduto de Madureira, forças ancestrais e tecnologia se misturam, revelando futuro moldado por resistência e espiritualidade.",
+                    visao: "🎭 Rio Cultural"
+                },
+                {
+                    titulo: "VARRE SAI",
+                    genero: "Drama Comunitário",
+                    duracao: "18 eps x 20min",
+                    classificacao: "14 anos",
+                    sinopse: "Comunidade da Zona Norte enfrenta desafios sociais com histórias de solidariedade, tensão e esperança que se cruzam.",
+                    visao: "🏘️ Rio das Comunidades"
+                },
+                {
+                    titulo: "UM VERÃO EM ARRAIAL",
+                    genero: "Romance/Drama",
+                    duracao: "10 eps x 25min",
+                    classificacao: "14 anos",
+                    sinopse: "Turistas e moradores vivem paixões intensas e revelações sob as águas cristalinas de Arraial do Cabo durante verão inesquecível.",
+                    visao: "🌊 Rio Litoral"
+                },
+                {
+                    titulo: "TEU SAMBA",
+                    genero: "Musical/Drama",
+                    duracao: "20 eps x 20min",
+                    classificacao: "14 anos",
+                    sinopse: "Jovem sambista busca sucesso enquanto enfrenta conflitos familiares, rivalidades e o peso da tradição cultural carioca.",
+                    visao: "🎭 Rio Cultural"
+                },
+                {
+                    titulo: "LETRA 7",
+                    genero: "Suspense/Crime Digital",
+                    duracao: "12 eps x 25min",
+                    classificacao: "16 anos",
+                    sinopse: "Grupo de estelionatários especialistas em golpes digitais vê seu império ruir após erro que desperta polícia e milícia.",
+                    visao: "🏙️ Rio Centro"
+                },
+                {
+                    titulo: "Ô POSTINHO",
+                    genero: "Comédia",
+                    duracao: "15 eps x 20min",
+                    classificacao: "14 anos",
+                    sinopse: "No posto de saúde mais caótico da favela, agentes e moradores enfrentam absurdos cotidianos com humor ácido e crítica social.",
+                    visao: "🎬 Rio Cotidiano"
+                },
+                {
+                    titulo: "IMPÉRIO DE PEDRA",
+                    genero: "Drama Familiar",
+                    duracao: "20 eps x 25min",
+                    classificacao: "14 anos",
+                    sinopse: "Família do Vidigal que enriquece com mármore tenta se adaptar à vida no Leblon, mas segredos provocam intrigas e traições.",
+                    visao: "🏘️ Rio das Comunidades"
+                },
+                {
+                    titulo: "MEIA TROCADA",
+                    genero: "Sitcom",
+                    duracao: "12 eps x 20min",
+                    classificacao: "Livre",
+                    sinopse: "Hugo, 30+, se muda para o Vidigal após fim do casamento e vira síndico involuntário, lidando com vizinhos peculiares e situações caóticas.",
+                    visao: "🏘️ Rio das Comunidades"
+                }
+            ],
+            
+            programa: [
+                {
+                    titulo: "VEM, AMIGOS",
+                    genero: "Comédia/Paródia",
+                    duracao: "30min",
+                    classificacao: "Livre",
+                    sinopse: "Paródia de programa esportivo sobre cotidiano de jogadores negros, apresentado por Patrick Sonata e Tamires Gomes.",
+                    visao: "🎭 Rio Cultural"
+                }
+            ],
+            
+            teatro: [
+                {
+                    titulo: "MODÉSTIA À PARTE",
+                    genero: "Comédia/Solo",
+                    duracao: "60min",
+                    classificacao: "14 anos",
+                    sinopse: "Monólogo tragicômico de homem negro periférico sobre ascensão social, família e as contradições da mobilidade.",
+                    visao: "🏘️ Rio das Comunidades"
+                }
+            ],
+            
+            formativo: [
+                {
+                    titulo: "INCUBA — MERGULHO NA ESCRITA",
+                    genero: "Oficina de Roteiro",
+                    duracao: "60 jovens/ano",
+                    classificacao: "Livre",
+                    sinopse: "Oficina de roteiro para 60 jovens pretos, democratizando acesso ao mercado audiovisual através de imersão criativa.",
+                    visao: "🎓 Educação"
+                }
+            ],
+            
+            plataformas: [
+                {
+                    titulo: "NOVEL FLIX",
+                    genero: "Plataforma de Streaming",
+                    duracao: "Mobile-first",
+                    classificacao: "Livre",
+                    sinopse: "Plataforma especializada em novelas verticais, exibindo todo o catálogo de mini novelas em formato mobile-first.",
+                    visao: "📱 Tech"
+                },
+                {
+                    titulo: "SAMBAPLAY",
+                    genero: "App Musical",
+                    duracao: "24/7",
+                    classificacao: "Livre",
+                    sinopse: "App de rodas de samba, shows ao vivo e rádio digital, focada na cultura musical brasileira e periférica.",
+                    visao: "🎭 Rio Cultural"
+                },
+                {
+                    titulo: "GINGA",
+                    genero: "Plataforma de Dança",
+                    duracao: "On-demand",
+                    classificacao: "Livre",
+                    sinopse: "Plataforma de dança com aulas online, tutoriais e conteúdo educativo sobre danças urbanas e tradicionais brasileiras.",
+                    visao: "🎭 Rio Cultural"
+                }
+            ]
+        };
+        
+        // ========== RENDERIZAR PROJETOS ==========
+        function renderizarProjetos() {
+            // Longas
+            const longasDiv = document.getElementById('longas');
+            projetos.longas.forEach(p => {
+                longasDiv.innerHTML += `
+                    <div class="projeto-card">
+                        <span class="projeto-tipo">LONGA</span>
+                        <div class="projeto-titulo">${p.titulo}</div>
+                        <div class="projeto-genero">${p.genero}</div>
+                        <div class="projeto-sinopse">${p.sinopse}</div>
+                        <div class="projeto-metadata">
+                            <span class="projeto-duracao">${p.duracao}</span>
+                            <span class="projeto-classificacao">${p.classificacao}</span>
+                        </div>
+                        <div class="projeto-visao">${p.visao}</div>
+                    </div>
+                `;
+            });
+            
+            // Séries
+            const seriesDiv = document.getElementById('series');
+            projetos.series.forEach(p => {
+                seriesDiv.innerHTML += `
+                    <div class="projeto-card">
+                        <span class="projeto-tipo">SÉRIE</span>
+                        <div class="projeto-titulo">${p.titulo}</div>
+                        <div class="projeto-genero">${p.genero}</div>
+                        <div class="projeto-sinopse">${p.sinopse}</div>
+                        <div class="projeto-metadata">
+                            <span class="projeto-duracao">${p.duracao}</span>
+                            <span class="projeto-classificacao">${p.classificacao}</span>
+                        </div>
+                        <div class="projeto-visao">${p.visao}</div>
+                    </div>
+                `;
+            });
+            
+            // Mini Novelas
+            const miniDiv = document.getElementById('mini-novelas');
+            projetos.miniNovelas.forEach(p => {
+                miniDiv.innerHTML += `
+                    <div class="projeto-card">
+                        <span class="projeto-tipo">MINI NOVELA</span>
+                        <div class="projeto-titulo">${p.titulo}</div>
+                        <div class="projeto-genero">${p.genero}</div>
+                        <div class="projeto-sinopse">${p.sinopse}</div>
+                        <div class="projeto-metadata">
+                            <span class="projeto-duracao">${p.duracao}</span>
+                            <span class="projeto-classificacao">${p.classificacao}</span>
+                        </div>
+                        <div class="projeto-visao">${p.visao}</div>
+                    </div>
+                `;
+            });
+            
+            // Programa
+            const progDiv = document.getElementById('programa');
+            projetos.programa.forEach(p => {
+                progDiv.innerHTML += `
+                    <div class="projeto-card">
+                        <span class="projeto-tipo">PROGRAMA</span>
+                        <div class="projeto-titulo">${p.titulo}</div>
+                        <div class="projeto-genero">${p.genero}</div>
+                        <div class="projeto-sinopse">${p.sinopse}</div>
+                        <div class="projeto-metadata">
+                            <span class="projeto-duracao">${p.duracao}</span>
+                            <span class="projeto-classificacao">${p.classificacao}</span>
+                        </div>
+                        <div class="projeto-visao">${p.visao}</div>
+                    </div>
+                `;
+            });
+            
+            // Teatro
+            const teatroDiv = document.getElementById('teatro');
+            projetos.teatro.forEach(p => {
+                teatroDiv.innerHTML += `
+                    <div class="projeto-card">
+                        <span class="projeto-tipo">TEATRO</span>
+                        <div class="projeto-titulo">${p.titulo}</div>
+                        <div class="projeto-genero">${p.genero}</div>
+                        <div class="projeto-sinopse">${p.sinopse}</div>
+                        <div class="projeto-metadata">
+                            <span class="projeto-duracao">${p.duracao}</span>
+                            <span class="projeto-classificacao">${p.classificacao}</span>
+                        </div>
+                        <div class="projeto-visao">${p.visao}</div>
+                    </div>
+                `;
+            });
+            
+            // Formativo
+            const formDiv = document.getElementById('formativo');
+            projetos.formativo.forEach(p => {
+                formDiv.innerHTML += `
+                    <div class="projeto-card">
+                        <span class="projeto-tipo">FORMATIVO</span>
+                        <div class="projeto-titulo">${p.titulo}</div>
+                        <div class="projeto-genero">${p.genero}</div>
+                        <div class="projeto-sinopse">${p.sinopse}</div>
+                        <div class="projeto-metadata">
+                            <span class="projeto-duracao">${p.duracao}</span>
+                            <span class="projeto-classificacao">${p.classificacao}</span>
+                        </div>
+                        <div class="projeto-visao">${p.visao}</div>
+                    </div>
+                `;
+            });
+            
+            // Plataformas
+            const platDiv = document.getElementById('plataformas');
+            projetos.plataformas.forEach(p => {
+                platDiv.innerHTML += `
+                    <div class="projeto-card">
+                        <span class="projeto-tipo">PLATAFORMA</span>
+                        <div class="projeto-titulo">${p.titulo}</div>
+                        <div class="projeto-genero">${p.genero}</div>
+                        <div class="projeto-sinopse">${p.sinopse}</div>
+                        <div class="projeto-metadata">
+                            <span class="projeto-duracao">${p.duracao}</span>
+                            <span class="projeto-classificacao">${p.classificacao}</span>
+                        </div>
+                        <div class="projeto-visao">${p.visao}</div>
+                    </div>
+                `;
+            });
+        }
+        
+        // Iniciar
+        renderizarProjetos();
+    </script>
+</body>
+</html>

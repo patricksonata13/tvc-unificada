@@ -1,0 +1,13 @@
+============================================================
+TVC STUDIOS - ESCALA DE SERVIÇO (CALL SHEET)
+PROJETO: O MATUTO - DIA 01/03
+============================================================
+08:00 - Chegada da Equipe Técnica (Locação: Rodoviária)
+08:30 - Caracterização e Figurino (Patrick Sonata)
+09:00 - Briefing de Segurança (Catiço Silva)
+09:30 - Início de Gravação: Cena 01
+12:30 - Almoço (Logística: Tamires Gomes)
+17:00 - Encerramento e Backup (tvc_backup.py)
+============================================================
+EQUIPAMENTO RESERVADO: Blackmagic 6K, 2 Baterias V-Mount.
+============================================================

@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+}
+.admin-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.modulos-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+.modulo-item {
+    display: block;
+    padding: 15px;
+    background: #667eea;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+}
+.modulo-item:hover {
+    background: #5a6fd8;
+}
+.tabela-admin {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.tabela-admin th, .tabela-admin td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+.tabela-admin th {
+    background-color: #667eea;
+    color: white;
+}
+.btn-novo {
+    display: inline-block;
+    padding: 10px 15px;
+    background: #4caf50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+.form-admin {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+}
+.form-admin label {
+    font-weight: bold;
+}
+.form-admin input, .form-admin select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.form-admin button {
+    padding: 10px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

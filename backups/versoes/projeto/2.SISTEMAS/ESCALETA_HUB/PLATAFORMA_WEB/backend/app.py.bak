@@ -1,0 +1,156 @@
+#!/usr/bin/env python3
+# API da TVC Studios
+
+from flask import Flask, jsonify, send_file, request
+from flask_cors import CORS
+import os
+import json
+import datetime
+from pathlib import Path
+
+app = Flask(__name__)
+CORS(app)
+
+BASE = os.path.expanduser("~/TVC4")
+
+# ============================================
+# ROTAS DA API
+# ============================================
+
+@app.route('/')
+def home():
+    return jsonify({
+        "nome": "TVC Studios API",
+        "versao": "1.0.0",
+        "status": "online",
+        "data": datetime.datetime.now().isoformat()
+    })
+
+# ===== PROJETOS =====
+@app.route('/api/projetos')
+def listar_projetos():
+    try:
+        with open(f"{BASE}/GESTAO/projetos.json", 'r') as f:
+            projetos = json.load(f)
+        return jsonify(projetos)
+    except:
+        return jsonify({"erro": "Arquivo não encontrado"}), 404
+
+# ===== FINANCEIRO =====
+@app.route('/api/financeiro')
+def get_financeiro():
+    try:
+        with open(f"{BASE}/GESTAO/dados_financeiros.json", 'r') as f:
+            fin = json.load(f)
+        return jsonify(fin)
+    except:
+        return jsonify({"erro": "Arquivo não encontrado"}), 404
+
+# ===== HARDWARE (STATUS DO SISTEMA) =====
+@app.route('/api/status')
+def get_status():
+    try:
+        import psutil
+        status = {
+            "cpu": psutil.cpu_percent(),
+            "memoria": psutil.virtual_memory().percent,
+            "disco": psutil.disk_usage('/').percent,
+            "tempo": datetime.datetime.now().strftime("%H:%M:%S"),
+            "data": datetime.datetime.now().strftime("%d/%m/%Y")
+        }
+        return jsonify(status)
+    except:
+        return jsonify({"erro": "psutil não disponível"}), 500
+
+# ===== LISTAR VÍDEOS =====
+@app.route('/api/videos')
+def listar_videos():
+    videos = []
+    
+    # Vídeos brutos
+    brutos = f"{BASE}/TVC_STUDIOS/Brutos"
+    if os.path.exists(brutos):
+        for f in os.listdir(brutos):
+            if f.endswith('.mp4'):
+                videos.append({
+                    "nome": f,
+                    "tipo": "bruto",
+                    "caminho": f"/api/video/bruto/{f}"
+                })
+    
+    # Vídeos finalizados
+    finalizados = f"{BASE}/TVC_STUDIOS/Finalizados"
+    if os.path.exists(finalizados):
+        for f in os.listdir(finalizados):
+            if f.endswith('.mp4'):
+                videos.append({
+                    "nome": f,
+                    "tipo": "finalizado",
+                    "caminho": f"/api/video/finalizado/{f}"
+                })
+    
+    return jsonify(videos)
+
+# ===== SERVIR VÍDEOS =====
+@app.route('/api/video/<tipo>/<nome>')
+def servir_video(tipo, nome):
+    if tipo == 'bruto':
+        pasta = f"{BASE}/TVC_STUDIOS/Brutos"
+    elif tipo == 'finalizado':
+        pasta = f"{BASE}/TVC_STUDIOS/Finalizados"
+    else:
+        return jsonify({"erro": "Tipo inválido"}), 404
+    
+    caminho = os.path.join(pasta, nome)
+    if os.path.exists(caminho):
+        return send_file(caminho, mimetype='video/mp4')
+    else:
+        return jsonify({"erro": "Arquivo não encontrado"}), 404
+
+# ===== LEGENDAS =====
+@app.route('/api/legendas/<idioma>/<nome>')
+def servir_legenda(idioma, nome):
+    # Converte nome do vídeo para nome da legenda
+    nome_srt = nome.replace('.mp4', f'.{idioma}.srt')
+    caminho = f"{BASE}/TVC_STUDIOS/LEGENDAS/{idioma.upper()}/{nome_srt}"
+    
+    if os.path.exists(caminho):
+        return send_file(caminho, mimetype='text/plain')
+    else:
+        return jsonify({"erro": "Legenda não encontrada"}), 404
+
+# ===== ESTATÍSTICAS =====
+@app.route('/api/stats')
+def get_stats():
+    stats = {
+        "videos": {
+            "brutos": len(os.listdir(f"{BASE}/TVC_STUDIOS/Brutos")) if os.path.exists(f"{BASE}/TVC_STUDIOS/Brutos") else 0,
+            "finalizados": len(os.listdir(f"{BASE}/TVC_STUDIOS/Finalizados")) if os.path.exists(f"{BASE}/TVC_STUDIOS/Finalizados") else 0
+        },
+        "projetos": 0,
+        "equity": 0
+    }
+    
+    try:
+        with open(f"{BASE}/GESTAO/projetos.json", 'r') as f:
+            proj = json.load(f)
+            stats["projetos"] = len(proj.get('projetos', []))
+    except:
+        pass
+        
+    try:
+        with open(f"{BASE}/GESTAO/dados_financeiros.json", 'r') as f:
+            fin = json.load(f)
+            stats["equity"] = fin.get('equity_brl', 0)
+    except:
+        pass
+    
+    return jsonify(stats)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5001, debug=True)
+
+# Servir frontend
+@app.route('/')
+def serve_frontend():
+    return send_file(os.path.expanduser('~/TVC4/PLATAFORMA_WEB/frontend/index.html'))

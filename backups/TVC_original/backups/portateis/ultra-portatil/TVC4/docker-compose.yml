@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  tvc-studios:
+    build: .
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./TVC_STUDIOS:/app/TVC_STUDIOS
+      - ./GESTAO:/app/GESTAO
+    restart: unless-stopped

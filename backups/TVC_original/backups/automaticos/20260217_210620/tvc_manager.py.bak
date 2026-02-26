@@ -1,0 +1,213 @@
+#!/usr/bin/env python3
+# TVC_MANAGER.py
+# Interface unificada para todos os módulos
+
+import os
+import sys
+import time
+import subprocess
+from pathlib import Path
+
+class TVCManager:
+    """Gerenciador central da TVC Studios"""
+    
+    def __init__(self):
+        self.base = os.path.expanduser("~/TVC4")
+        self.processos = {}
+        
+    def menu(self):
+        """Menu principal"""
+        while True:
+            os.system('clear' if os.name == 'posix' else 'cls')
+            
+            print(f"""
+╔═══════════════════════════════════════════════════════════════╗
+║                    TVC STUDIOS - MANAGER                       ║
+║                    "Controle Total da TV"                       ║
+╚═══════════════════════════════════════════════════════════════╝
+
+ PROCESSOS ATIVOS:
+   1. 📡 Watchdog (processamento automático)
+   2. 📊 HUD em tempo real
+   3. 💰 Dashboard Financeiro
+   4. 📋 Gerenciar Projetos
+   5. 📦 Backup Automático
+   6. 📈 Relatórios
+   7. 🎬 Processar Vídeos Manualmente
+   8. 🔧 Configurações
+   9. 🛠️  Ferramentas Externas
+   9. 📝 Legendas e Tradução
+   0. 🌐 Plataforma Web
+   0. Sair
+
+ Digite o número da opção: """)
+            
+            opcao = input().strip()
+            
+            if opcao == '1':
+                self.iniciar_watchdog()
+            elif opcao == '2':
+                self.iniciar_hud()
+            elif opcao == '3':
+                self.financeiro()
+            elif opcao == '4':
+                self.projetos()
+            elif opcao == '5':
+                self.backup()
+            elif opcao == '6':
+                self.relatorios()
+            elif opcao == '7':
+                self.processar_agora()
+            elif opcao == '8':
+                self.configuracoes()
+            elif opcao == '0':
+                print("Encerrando...")
+                break
+                
+    def iniciar_watchdog(self):
+        """Inicia o watchdog em background"""
+        print("📡 Iniciando watchdog em background...")
+        subprocess.Popen(['python3', f'{self.base}/tvc_watchdog.py'], 
+                        stdout=subprocess.DEVNULL, 
+                        stderr=subprocess.DEVNULL)
+        print("✅ Watchdog iniciado!")
+        input("\nPressione Enter para continuar...")
+        
+    def iniciar_hud(self):
+        """Inicia o HUD"""
+        os.system(f'python3 {self.base}/GESTAO/hud_tvc.py')
+        
+    def financeiro(self):
+        """Menu financeiro"""
+        os.system(f'python3 {self.base}/GESTAO/dashboard_financeiro.py')
+        input("\nPressione Enter para continuar...")
+        
+    def projetos(self):
+        """Menu de projetos"""
+        os.system(f'python3 {self.base}/GESTAO/projetos.py')
+        input("\nPressione Enter para continuar...")
+        
+    def backup(self):
+        """Menu de backup"""
+        print("""
+ BACKUP:
+   1. Fazer backup agora
+   2. Listar backups
+   3. Restaurar backup
+   """)
+        op = input("Opção: ")
+        
+        if op == '1':
+            subprocess.run(['python3', f'{self.base}/AUTOMACOES/backup_automatico.py', 'agora'])
+        elif op == '2':
+            subprocess.run(['python3', f'{self.base}/AUTOMACOES/backup_automatico.py', 'listar'])
+        elif op == '3':
+            nome = input("Nome do backup: ")
+            subprocess.run(['python3', f'{self.base}/AUTOMACOES/backup_automatico.py', 'restaurar', nome])
+            
+        input("\nPressione Enter para continuar...")
+        
+    def relatorios(self):
+        """Menu de relatórios"""
+        print("""
+ RELATÓRIOS:
+   1. Gerar relatório agora
+   2. Ver relatórios disponíveis
+   """)
+        op = input("Opção: ")
+        
+        if op == '1':
+            subprocess.run(['python3', f'{self.base}/AUTOMACOES/relatorios_automaticos.py', 'agora'])
+        elif op == '2':
+            rel_dir = f"{self.base}/GESTAO/RELATORIOS"
+            if os.path.exists(rel_dir):
+                print("\n📁 Relatórios disponíveis:")
+                for f in sorted(Path(rel_dir).glob('*.txt'), reverse=True)[:10]:
+                    print(f"   {f.name}")
+            else:
+                print("Nenhum relatório encontrado")
+                
+        input("\nPressione Enter para continuar...")
+        
+    def processar_agora(self):
+        """Processa vídeos manualmente"""
+        subprocess.run(['python3', f'{self.base}/tvc_processor.py'])
+        input("\nPressione Enter para continuar...")
+        
+    def configuracoes(self):
+        """Configurações do sistema"""
+        print("""
+ CONFIGURAÇÕES:
+   1. Verificar dependências
+   2. Criar estrutura de pastas
+   3. Voltar
+   """)
+        op = input("Opção: ")
+        
+        if op == '1':
+            self.verificar_dependencias()
+        elif op == '2':
+            self.criar_estrutura()
+            
+        input("\nPressione Enter para continuar...")
+        
+    def verificar_dependencias(self):
+        """Verifica dependências instaladas"""
+        print("\n🔍 Verificando dependências...")
+        
+        deps = {
+            'ffmpeg': 'ffmpeg -version',
+            'python3': 'python3 --version',
+            'pip3': 'pip3 --version'
+        }
+        
+        for nome, cmd in deps.items():
+            try:
+                subprocess.run(cmd.split(), capture_output=True, check=True)
+                print(f"   ✅ {nome}")
+            except:
+                print(f"   ❌ {nome}")
+                
+    def criar_estrutura(self):
+        """Cria estrutura de pastas"""
+        pastas = [
+            'Assets',
+            'TVC_STUDIOS/Brutos',
+            'TVC_STUDIOS/Finalizados',
+            'GESTAO',
+            'GESTAO/RELATORIOS',
+            'AUTOMACOES',
+            'BACKUPS'
+        ]
+        
+        for pasta in pastas:
+            path = f"{self.base}/{pasta}"
+            os.makedirs(path, exist_ok=True)
+            print(f"   ✅ {pasta}")
+            
+        print("✅ Estrutura criada!")
+
+if __name__ == "__main__":
+    manager = TVCManager()
+    manager.menu()
+
+        elif opcao == '9':
+            self.legendas()
+            
+    def legendas(self):
+        """Menu de legendas"""
+        os.system('python3 ~/TVC4/GESTAO/menu_legendas.py')
+
+        elif opcao == '9':
+            self.ferramentas_externas()
+            
+    def ferramentas_externas(self):
+        """Menu de ferramentas externas"""
+        os.system('python3 ~/TVC4/GESTAO/menu_ferramentas.py')
+
+        elif opcao == '0':
+            self.plataforma_web()
+            
+    def plataforma_web(self):
+        """Inicia a plataforma web"""
+        os.system('bash ~/TVC4/PLATAFORMA_WEB/iniciar_plataforma.sh')

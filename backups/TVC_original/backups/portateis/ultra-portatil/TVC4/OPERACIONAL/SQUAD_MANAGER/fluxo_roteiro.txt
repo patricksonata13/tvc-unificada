@@ -1,0 +1,10 @@
+============================================================
+           WORKFLOW: NÚCLEO DE ROTEIRO TVC
+============================================================
+1. SHOWRUNNER: Define o arco da temporada (Macro).
+2. ROTEIRISTA A: Desenvolve os diálogos (Micro).
+3. SCRIPT DOCTOR: Revisa o "Carioquês" e a agilidade.
+4. SISTEMA: Gera o arquivo .fdx ou .txt para o set.
+
+* FERRAMENTA: Os roteiros devem ser salvos em ~/TVC4/NUCLEO_PRO/
+============================================================

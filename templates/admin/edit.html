@@ -1,0 +1,12 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h1>{{ 'Editar' if item else 'Novo' }} {{ info.nome }}</h1>
+<form method="post">
+    {% for coluna in colunas %}
+        <label for="{{ coluna }}">{{ coluna }}</label>
+        <input type="text" name="{{ coluna }}" id="{{ coluna }}" value="{{ item[coluna] if item else '' }}">
+    {% endfor %}
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <a href="{{ url_for('admin.list_items', modulo=modulo) }}" class="btn">Cancelar</a>
+</form>
+{% endblock %}

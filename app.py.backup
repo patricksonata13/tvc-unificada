@@ -1,0 +1,143 @@
+from flask import Flask, jsonify, render_template, request
+from flask_cors import CORS
+from flask_login import LoginManager, current_user
+import database
+from auth import auth_bp, login_manager
+from admin import admin_bp
+import crud
+
+app = Flask(__name__)
+app.secret_key = 'chave-super-secreta-tvc'  # Mude em produção
+CORS(app)
+
+# Inicializa o Flask-Login
+login_manager.init_app(app)
+
+# Registra os blueprints
+app.register_blueprint(auth_bp)
+app.register_blueprint(admin_bp)
+
+@app.route('/')
+def home():
+    return render_template('index.html', logged_in=current_user.is_authenticated)
+
+@app.route('/api/tudo')
+def api_tudo():
+    dados = database.get_all_data()
+    return jsonify(dados)
+
+# Mapeamento de módulos para tabelas
+MODULOS = {
+    'escaleta': {'table': 'escaleta', 'id_field': 'id'},
+    'jornalismo': {'table': 'jornalismo', 'id_field': 'id'},
+    'esportes': {'table': 'clubes', 'id_field': 'id'},
+    'brasileirao': {'table': 'brasileirao', 'id_field': 'pos'},
+    'carioca': {'table': 'carioca', 'id_field': 'pos'},
+    'equipe': {'table': 'equipe', 'id_field': 'id'},
+    'equipamentos': {'table': 'equipamentos', 'id_field': 'id'},
+    'materiais': {'table': 'materiais', 'id_field': 'id'},
+    'fluxo': {'table': 'fluxo', 'id_field': 'id'},
+    'agenda': {'table': 'agenda', 'id_field': 'id'},
+    'escalas': {'table': 'escalas', 'id_field': 'id'},
+    'financeiro': {'table': 'financeiro', 'id_field': 'chave'},
+}
+
+@app.route('/api/<modulo>', methods=['GET'])
+def listar(modulo):
+    if modulo not in MODULOS:
+        return jsonify({'erro': 'Módulo não encontrado'}), 404
+    info = MODULOS[modulo]
+    itens = crud.get_all(info['table'])
+    return jsonify(itens)
+
+@app.route('/api/<modulo>/<id>', methods=['GET'])
+def buscar(modulo, id):
+    if modulo not in MODULOS:
+        return jsonify({'erro': 'Módulo não encontrado'}), 404
+    info = MODULOS[modulo]
+    item = crud.get_by_id(info['table'], info['id_field'], id)
+    if item is None:
+        return jsonify({'erro': 'Item não encontrado'}), 404
+    return jsonify(item)
+
+@app.route('/api/<modulo>', methods=['POST'])
+def criar(modulo):
+    if modulo not in MODULOS:
+        return jsonify({'erro': 'Módulo não encontrado'}), 404
+    data = request.get_json()
+    if not data:
+        return jsonify({'erro': 'Dados inválidos'}), 400
+    info = MODULOS[modulo]
+    try:
+        novo_id = crud.create_item(info['table'], data, info['id_field'])
+        return jsonify({'id': novo_id, 'mensagem': 'Criado com sucesso'}), 201
+    except Exception as e:
+        return jsonify({'erro': str(e)}), 500
+
+@app.route('/api/<modulo>/<id>', methods=['PUT'])
+def atualizar(modulo, id):
+    if modulo not in MODULOS:
+        return jsonify({'erro': 'Módulo não encontrado'}), 404
+    data = request.get_json()
+    if not data:
+        return jsonify({'erro': 'Dados inválidos'}), 400
+    info = MODULOS[modulo]
+    try:
+        afetados = crud.update_item(info['table'], info['id_field'], id, data)
+        if afetados == 0:
+            return jsonify({'erro': 'Item não encontrado'}), 404
+        return jsonify({'mensagem': 'Atualizado com sucesso'})
+    except Exception as e:
+        return jsonify({'erro': str(e)}), 500
+
+@app.route('/api/<modulo>/<id>', methods=['DELETE'])
+def deletar(modulo, id):
+    if modulo not in MODULOS:
+        return jsonify({'erro': 'Módulo não encontrado'}), 404
+    info = MODULOS[modulo]
+    try:
+        afetados = crud.delete_item(info['table'], info['id_field'], id)
+        if afetados == 0:
+            return jsonify({'erro': 'Item não encontrado'}), 404
+        return jsonify({'mensagem': 'Deletado com sucesso'})
+    except Exception as e:
+        return jsonify({'erro': str(e)}), 500
+
+if __name__ == '__main__':
+    print("="*60)
+    print("TVC UNIFICADO - Com autenticação e admin")
+    print("="*60)
+    app.run(debug=True, port=5010)
+
+# ==================== SWAGGER ====================
+from flask_swagger import swagger
+
+@app.route('/swagger/spec')
+def swagger_spec():
+    return jsonify(swagger(app))
+
+@app.route('/swagger/docs')
+def swagger_docs():
+    return render_template('swagger.html')
+
+# ==================== SWAGGER ====================
+from flask_swagger import swagger
+
+@app.route('/swagger/spec')
+def swagger_spec():
+    return jsonify(swagger(app))
+
+@app.route('/swagger/docs')
+def swagger_docs():
+    return render_template('swagger.html')
+
+# ==================== SWAGGER ====================
+from flask_swagger import swagger
+
+@app.route('/swagger/spec')
+def swagger_spec():
+    return jsonify(swagger(app))
+
+@app.route('/swagger/docs')
+def swagger_docs():
+    return render_template('swagger.html')

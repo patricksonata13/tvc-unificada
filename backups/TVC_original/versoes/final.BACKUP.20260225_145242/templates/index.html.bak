@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVC - TV Carioca</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #f5c518; margin-bottom: 20px; }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #f5c518;
+        }
+        .stat-value { font-size: 2em; font-weight: bold; color: #f5c518; }
+        .stat-label { color: #aaa; }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: #1a1a1a;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .tab.active { background: #f5c518; color: #000; }
+        
+        .content {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 400px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .card {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #f5c518;
+        }
+        .card h3 { color: #f5c518; margin-bottom: 5px; }
+        .loading { text-align: center; padding: 50px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📺 TV Carioca</h1>
+        
+        <div class="stats" id="stats"></div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="aba('escaleta')">Projetos</button>
+            <button class="tab" onclick="aba('jornalismo')">Notícias</button>
+            <button class="tab" onclick="aba('esportes')">Clubes</button>
+            <button class="tab" onclick="aba('financeiro')">Financeiro</button>
+        </div>
+        
+        <div class="content" id="conteudo">
+            <div class="loading">Carregando...</div>
+        </div>
+    </div>
+
+    <script>
+        let dados = {};
+        
+        fetch('/api/tudo')
+            .then(r => r.json())
+            .then(d => {
+                dados = d;
+                document.getElementById('stats').innerHTML = `
+                    <div class="stat-card"><div class="stat-value">${d.stats.projetos}</div><div class="stat-label">Projetos</div></div>
+                    <div class="stat-card"><div class="stat-value">${d.stats.noticias}</div><div class="stat-label">Notícias</div></div>
+                    <div class="stat-card"><div class="stat-value">${d.stats.clubes}</div><div class="stat-label">Clubes</div></div>
+                `;
+                aba('escaleta');
+            });
+            
+        function aba(nome) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            let html = '<div class="grid">';
+            
+            if (nome === 'escaleta') {
+                dados.escaleta.forEach(p => {
+                    html += `<div class="card"><h3>${p.nome}</h3><p>${p.tipo}</p></div>`;
+                });
+            } else if (nome === 'jornalismo') {
+                dados.jornalismo.forEach(n => {
+                    html += `<div class="card"><h3>${n.titulo}</h3><p>${n.categoria}</p></div>`;
+                });
+            } else if (nome === 'esportes') {
+                dados.esportes.forEach(c => {
+                    html += `<div class="card"><h3>${c.nome}</h3><p>${c.estadio}</p></div>`;
+                });
+            } else if (nome === 'financeiro') {
+                html = `
+                    <div class="grid">
+                        <div class="card">
+                            <h3>💰 Equity</h3>
+                            <p>R$ ${(dados.financeiro.equity_brl/1000000).toFixed(1)}M</p>
+                        </div>
+                        <div class="card">
+                            <h3>📊 2026</h3>
+                            <p>Receitas: R$ ${(dados.financeiro.receitas_2026/1000000).toFixed(1)}M</p>
+                            <p>Lucro: R$ ${(dados.financeiro.lucro_2026/1000000).toFixed(1)}M</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (nome !== 'financeiro') html += '</div>';
+            document.getElementById('conteudo').innerHTML = html;
+        }
+    </script>
+</body>
+</html>

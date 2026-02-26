@@ -1,0 +1,28 @@
+# data/jornalismo.py - 8 notícias
+
+JORNALISMO_NOTICIAS = [
+    {"id": 1, "titulo": "Prefeitura anuncia edital de cultura de R$ 1 milhão",
+     "categoria": "Cidade", "data": "21/02/2026", "autor": "Redação",
+     "conteudo": "RioFilme lança edital para produção de curtas e webséries.", "views": 1234},
+    {"id": 2, "titulo": "Madureira recebe festival de samba com 20 escolas",
+     "categoria": "Cultura", "data": "20/02/2026", "autor": "Redação",
+     "conteudo": "Evento reúne as principais escolas de samba do Rio.", "views": 892},
+    {"id": 3, "titulo": "Flamengo vence clássico por 3x1 no Maracanã",
+     "categoria": "Esportes", "data": "19/02/2026", "autor": "Redação Esportes",
+     "conteudo": "Rubro-negro assume liderança do campeonato.", "views": 2156},
+    {"id": 4, "titulo": "Rocinha ganha novo centro cultural",
+     "categoria": "Comunidade", "data": "18/02/2026", "autor": "Redação",
+     "conteudo": "Espaço vai oferecer oficinas de cinema e música.", "views": 567},
+    {"id": 5, "titulo": "Madonna confirma show no Reveillon de Copacabana",
+     "categoria": "Cidade", "data": "17/02/2026", "autor": "Redação",
+     "conteudo": "Expectativa de 2 milhões de pessoas na praia.", "views": 3421},
+    {"id": 6, "titulo": "Vasco anuncia reforma de São Januário",
+     "categoria": "Esportes", "data": "16/02/2026", "autor": "Redação Esportes",
+     "conteudo": "Obras devem começar em março.", "views": 789},
+    {"id": 7, "titulo": "Prefeitura revitaliza Orla de Copacabana",
+     "categoria": "Cidade", "data": "15/02/2026", "autor": "Redação",
+     "conteudo": "Obras incluem novo calçadão e ciclovia.", "views": 654},
+    {"id": 8, "titulo": "Theatro Municipal recebe festival de ópera",
+     "categoria": "Cultura", "data": "14/02/2026", "autor": "Redação",
+     "conteudo": "Evento internacional reúne grandes nomes da música.", "views": 432},
+]

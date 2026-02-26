@@ -1,0 +1,15 @@
+📀 TVC STUDIOS - VERSÃO PORTÁTIL
+
+COMO USAR:
+1. Copie a pasta TVC_PORTATIL para um pen drive
+2. No Mac de destino, execute "Iniciar.command"
+3. Acesse http://localhost:5001 no navegador
+
+REQUISITOS:
+- Python 3 instalado
+- Acesso à internet (para primeira execução)
+
+DICAS:
+- Coloque vídeos em TVC_STUDIOS/Brutos/
+- As legendas vão para TVC_STUDIOS/LEGENDAS/
+- Os dados ficam salvos na pasta

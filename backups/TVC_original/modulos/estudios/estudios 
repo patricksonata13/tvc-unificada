@@ -1,0 +1,15 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), 
+'data'))
+
+try:
+    from estudios import 
+EQUIPAMENTOS, FUNCIONARIOS, 
+ROTEIROS, ESCALAS
+except ImportError:
+    EQUIPAMENTOS = []
+    FUNCIONARIOS = []
+    ROTEIROS = []
+    ESCALAS = []
+

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVC - TV Carioca (Estrutura Organizacional)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #FFFFFF;
+            color: #212121;
+            line-height: 1.6;
+        }
+        
+        :root {
+            --white: #FFFFFF;
+            --areia-50: #FAF7F2;
+            --areia-100: #F5F0E6;
+            --areia-200: #E8E0D0;
+            --areia-300: #D8CFC0;
+            --areia-400: #C0B7A8;
+            --cinza-100: #F5F5F5;
+            --cinza-200: #EEEEEE;
+            --cinza-300: #E0E0E0;
+            --cinza-400: #BDBDBD;
+            --cinza-500: #9E9E9E;
+            --cinza-600: #757575;
+            --cinza-700: #616161;
+            --cinza-800: #424242;
+            --cinza-900: #212121;
+            --amarelo: #F5C518;
+            --amarelo-escuro: #E5B518;
+            --amarelo-claro: #FFF8E7;
+            
+            /* Cores por Diretoria */
+            --cor-escaleta: #F5C518;
+            --cor-estudios: #FF6B6B;
+            --cor-jornalismo: #228BE6;
+            --cor-esportes: #20C997;
+            --cor-master: #7950F2;
+            
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
+            --transition: all 0.3s ease;
+        }
+        
+        .header {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--areia-300);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cinza-900);
+        }
+        
+        .logo span {
+            color: var(--amarelo);
+            transition: var(--transition);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--cinza-600);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--amarelo);
+            border-bottom-color: var(--amarelo);
+        }
+        
+        .main {
+            margin-top: 70px;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--areia-100) 0%, var(--white) 100%);
+            padding: 60px 24px;
+            border-bottom: 1px solid var(--areia-300);
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--cinza-900);
+            margin-bottom: 8px;
+        }
+        
+        .hero h1 span {
+            color: var(--amarelo);
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--cinza-600);
+            max-width: 600px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+        
+        /* Organograma */
+        .organograma {
+            background: var(--white);
+            border: 1px solid var(--areia-300);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .holding-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--amarelo);
+        }
+        
+        .holding-nome {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cinza-900);
+            margin-bottom: 8px;
+        }
+        
+        .holding-ceo {
+            color: var(--cinza-600);
+            font-size: 1rem;
+        }
+        
+        .holding-missao {
+            margin-top: 16px;
+            font-style: italic;
+            color: var(--cinza-700);
+        }
+        
+        .diretorias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .diretoria-card {
+            background: var(--areia-50);
+            border: 1px solid var(--areia-300);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition);
+            border-top: 4px solid;
+        }
+        
+        .diretoria-card[data-id="escaleta"] { border-top-color: var(--cor-escaleta); }
+        .diretoria-card[data-id="estudios"] { border-top-color: var(--cor-estudios); }
+        .diretoria-card[data-id="jornalismo"] { border-top-color: var(--cor-jornalismo); }
+        .diretoria-card[data-id="esportes"] { border-top-color: var(--cor-esportes); }
+        .diretoria-card[data-id="master"] { border-top-color: var(--cor-master); }
+        
+        .diretoria-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .diretoria-nome {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .diretoria-diretor {
+            font-size: 0.9rem;
+            color: var(--cinza-600);
+            margin-bottom: 4px;
+        }
+        
+        .diretoria-ramal {
+            font-size: 0.8rem;
+            color: var(--cinza-500);
+        }
+        
+        .diretoria-stats {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            font-size: 0.8rem;
+        }
+        
+        .stat-badge {
+            background: var(--white);
+            padding: 4px 8px;
+            border-radius: 20px;
+            border: 1px solid var(--areia-300);
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .stat-card {
+            background: var(--areia-100);
+            border: 1px solid var(--areia-300);
+            padding: 24px;
+            text-align: center;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--amarelo);
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            color: var(--cinza-600);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Abas principais */
+        .main-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--areia-200);
+            padding: 4px;
+            border-radius: 12px;
+            margin: 40px 0 20px;
+            flex-wrap: wrap;
+        }
+        
+        .main-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: var(--cinza-700);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: var(--transition);
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .main-tab:hover {
+            background: var(--areia-300);
+        }
+        
+        .main-tab.active {
+            background: var(--white);
+            color: var(--amarelo);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* Sub-abas */
+        .sub-tabs {
+            display: flex;
+            gap: 8px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            background: var(--areia-50);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--areia-200);
+        }
+        
+        .sub-tab {
+            padding: 8px 16px;
+            background: var(--white);
+            border: 1px solid var(--areia-300);
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .sub-tab:hover {
+            border-color: var(--amarelo);
+            color: var(--amarelo);
+            transform: translateY(-2px);
+        }
+        
+        .sub-tab.active {
+            background: var(--amarelo);
+            border-color: var(--amarelo);
+            color: white;
+        }
+        
+        /* Grids */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+        
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+        
+        .card {
+            background: var(--white);
+            border: 1px solid var(--areia-300);
+            padding: 24px;
+            border-radius: 12px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--amarelo);
+        }
+        
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--cinza-900);
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--areia-200);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-meta {
+            color: var(--amarelo);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .card-text {
+            color: var(--cinza-600);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        
+        .card-status {
+            color: var(--cinza-700);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .equipe-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--areia-200);
+        }
+        
+        .equipe-item:last-child {
+            border-bottom: none;
+        }
+        
+        .equipe-foto {
+            width: 40px;
+            height: 40px;
+            background: var(--areia-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .equipe-info {
+            flex: 1;
+        }
+        
+        .equipe-nome {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .equipe-cargo {
+            font-size: 0.8rem;
+            color: var(--cinza-500);
+        }
+        
+        .equipe-ramal {
+            font-size: 0.75rem;
+            color: var(--amarelo);
+        }
+        
+        .ferramenta-item {
+            padding: 12px;
+            background: var(--areia-50);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .ferramenta-nome {
+            font-weight: 600;
+            color: var(--cinza-800);
+        }
+        
+        .ferramenta-desc {
+            font-size: 0.85rem;
+            color: var(--cinza-600);
+            margin: 4px 0;
+        }
+        
+        .ferramenta-status {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #51CF66;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.7rem;
+        }
+        
+        .prazo-card {
+            padding: 16px;
+            background: var(--white);
+            border-left: 4px solid;
+            margin-bottom: 12px;
+            border-radius: 8px;
+        }
+        
+        .prazo-card.alta { border-left-color: #FF6B6B; }
+        .prazo-card.media { border-left-color: #FFD43B; }
+        .prazo-card.baixa { border-left-color: #51CF66; }
+        
+        .progress-bar {
+            height: 6px;
+            background: var(--areia-200);
+            border-radius: 3px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--amarelo), #FFD700);
+            border-radius: 3px;
+            transition: width 0.5s;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .badge-alta { background: #FFE5E5; color: #D32F2F; }
+        .badge-media { background: #FFF3E0; color: #F57C00; }
+        .badge-baixa { background: #E8F5E9; color: #388E3C; }
+        .badge-entregue { background: #E3F2FD; color: #1976D2; }
+        
+        .footer {
+            background: var(--cinza-900);
+            color: white;
+            padding: 60px 24px 24px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .footer p {
+            color: var(--cinza-400);
+        }
+        
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--cinza-800);
+            color: var(--cinza-600);
+            font-size: 0.85rem;
+        }
+        
+        @media (max-width: 968px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .hero h1 { font-size: 2rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .main-tab { min-width: auto; padding: 8px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">TVC<span>.</span></div>
+            
+            <ul class="nav-menu">
+                <li><a class="active">Início</a></li>
+                <li><a href="#organograma">Organograma</a></li>
+                <li><a href="#equipe">Equipe</a></li>
+                <li><a href="#ferramentas">Ferramentas</a></li>
+                <li><a href="#prazos">Prazos</a></li>
+                <li><a href="#projetos">Projetos</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>
+                    TV <span>Carioca</span>
+                </h1>
+                <p>Estrutura Organizacional • Hierarquia • Equipe • Ferramentas • Prazos</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="stats-grid" id="stats-container">
+                <div class="stat-card"><div class="stat-number">23</div><div class="stat-label">Funcionários</div></div>
+                <div class="stat-card"><div class="stat-number">6</div><div class="stat-label">Projetos</div></div>
+                <div class="stat-card"><div class="stat-number">21</div><div class="stat-label">Ferramentas</div></div>
+                <div class="stat-card"><div class="stat-number">5</div><div class="stat-label">Diretorias</div></div>
+            </div>
+        </div>
+
+        <!-- Abas principais -->
+        <div class="container">
+            <div class="main-tabs">
+                <button class="main-tab active" onclick="mudarAba('organograma')">🏢 ORGANOGRAMA</button>
+                <button class="main-tab" onclick="mudarAba('equipe')">👥 EQUIPE</button>
+                <button class="main-tab" onclick="mudarAba('ferramentas')">🛠️ FERRAMENTAS</button>
+                <button class="main-tab" onclick="mudarAba('prazos')">⏰ PRAZOS</button>
+                <button class="main-tab" onclick="mudarAba('projetos')">📋 PROJETOS</button>
+            </div>
+
+            <!-- ABA ORGANOGRAMA -->
+            <div id="aba-organograma" class="aba-conteudo">
+                <div class="organograma" id="organograma-container">
+                    <div class="holding-header">
+                        <div class="holding-nome">TVC - TV CARIOCA</div>
+                        <div class="holding-ceo">CEO: Ana Paula Silveira</div>
+                        <div class="holding-missao">"Produzir conteúdo autêntico sobre o Rio de Janeiro"</div>
+                    </div>
+                    <div class="diretorias-grid" id="diretorias-grid"></div>
+                </div>
+                
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="mostrarDetalheDiretoria('escaleta')">🎬 ESCALETA</button>
+                    <button class="sub-tab" onclick="mostrarDetalheDiretoria('estudios')">🎥 ESTÚDIOS</button>
+                    <button class="sub-tab" onclick="mostrarDetalheDiretoria('jornalismo')">📰 JORNALISMO</button>
+                    <button class="sub-tab" onclick="mostrarDetalheDiretoria('esportes')">⚽ ESPORTES</button>
+                    <button class="sub-tab" onclick="mostrarDetalheDiretoria('master')">💰 MASTER</button>
+                </div>
+                <div id="diretoria-detalhe"></div>
+            </div>
+
+            <!-- ABA EQUIPE -->
+            <div id="aba-equipe" class="aba-conteudo" style="display:none">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="mostrarEquipe('escaleta')">🎬 ESCALETA</button>
+                    <button class="sub-tab" onclick="mostrarEquipe('estudios')">🎥 ESTÚDIOS</button>
+                    <button class="sub-tab" onclick="mostrarEquipe('jornalismo')">📰 JORNALISMO</button>
+                    <button class="sub-tab" onclick="mostrarEquipe('esportes')">⚽ ESPORTES</button>
+                    <button class="sub-tab" onclick="mostrarEquipe('master')">💰 MASTER</button>
+                </div>
+                <div class="grid" id="equipe-grid"></div>
+            </div>
+
+            <!-- ABA FERRAMENTAS -->
+            <div id="aba-ferramentas" class="aba-conteudo" style="display:none">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="mostrarFerramentas('escaleta')">🎬 ESCALETA</button>
+                    <button class="sub-tab" onclick="mostrarFerramentas('estudios')">🎥 ESTÚDIOS</button>
+                    <button class="sub-tab" onclick="mostrarFerramentas('jornalismo')">📰 JORNALISMO</button>
+                    <button class="sub-tab" onclick="mostrarFerramentas('esportes')">⚽ ESPORTES</button>
+                    <button class="sub-tab" onclick="mostrarFerramentas('master')">💰 MASTER</button>
+                </div>
+                <div class="grid" id="ferramentas-grid"></div>
+            </div>
+
+            <!-- ABA PRAZOS -->
+            <div id="aba-prazos" class="aba-conteudo" style="display:none">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="mostrarPrazos('todos')">Todos</button>
+                    <button class="sub-tab" onclick="mostrarPrazos('Alta')">Prioridade Alta</button>
+                    <button class="sub-tab" onclick="mostrarPrazos('Média')">Prioridade Média</button>
+                    <button class="sub-tab" onclick="mostrarPrazos('Baixa')">Prioridade Baixa</button>
+                </div>
+                <div id="prazos-grid"></div>
+            </div>
+
+            <!-- ABA PROJETOS -->
+            <div id="aba-projetos" class="aba-conteudo" style="display:none">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="mostrarProjetos('escaleta')">🎬 ESCALETA</button>
+                    <button class="sub-tab" onclick="mostrarProjetos('estudios')">🎥 ESTÚDIOS</button>
+                    <button class="sub-tab" onclick="mostrarProjetos('jornalismo')">📰 JORNALISMO</button>
+                    <button class="sub-tab" onclick="mostrarProjetos('esportes')">⚽ ESPORTES</button>
+                </div>
+                <div class="grid" id="projetos-grid"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>TVC - TV Carioca • Estrutura Organizacional Completa</p>
+            <div class="footer-bottom">
+                <p>© 2026 TVC - TV Carioca. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let dados = {};
+
+        async function carregarDados() {
+            try {
+                const response = await fetch('/api/tudo');
+                dados = await response.json();
+                
+                // Inicializar
+                mostrarOrganograma();
+                mostrarDetalheDiretoria('escaleta');
+                mostrarEquipe('escaleta');
+                mostrarFerramentas('escaleta');
+                mostrarPrazos('todos');
+                mostrarProjetos('escaleta');
+                
+                // Atualizar stats
+                document.getElementById('stats-container').innerHTML = `
+                    <div class="stat-card"><div class="stat-number">${dados.stats.total_funcionarios}</div><div class="stat-label">Funcionários</div></div>
+                    <div class="stat-card"><div class="stat-number">${dados.stats.total_projetos}</div><div class="stat-label">Projetos</div></div>
+                    <div class="stat-card"><div class="stat-number">${dados.stats.total_ferramentas}</div><div class="stat-label">Ferramentas</div></div>
+                    <div class="stat-card"><div class="stat-number">5</div><div class="stat-label">Diretorias</div></div>
+                `;
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+
+        function mostrarOrganograma() {
+            const org = dados.organograma;
+            const grid = document.getElementById('diretorias-grid');
+            
+            grid.innerHTML = org.diretorias.map(d => `
+                <div class="diretoria-card" data-id="${d.id}" onclick="mostrarDetalheDiretoria('${d.id}')">
+                    <div class="diretoria-nome">${d.nome}</div>
+                    <div class="diretoria-diretor">${d.diretor}</div>
+                    <div class="diretoria-ramal">Ramal ${d.ramal}</div>
+                    <div class="diretoria-stats">
+                        <span class="stat-badge">👥 ${d.equipe}</span>
+                        <span class="stat-badge">📋 ${d.projetos_ativos}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function mostrarDetalheDiretoria(diretoria) {
+            document.querySelectorAll('#aba-organograma .sub-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const dir = dados.organograma.diretorias.find(d => d.id === diretoria);
+            const cores = {
+                'escaleta': '#F5C518',
+                'estudios': '#FF6B6B',
+                'jornalismo': '#228BE6',
+                'esportes': '#20C997',
+                'master': '#7950F2'
+            };
+            
+            document.getElementById('diretoria-detalhe').innerHTML = `
+                <div class="card" style="border-top: 4px solid ${cores[diretoria]}">
+                    <h3>${dir.nome}</h3>
+                    <div class="grid-2">
+                        <div>
+                            <div class="card-meta">Diretor</div>
+                            <div class="card-text">${dir.diretor}</div>
+                            <div class="card-text">📧 ${dir.email}</div>
+                            <div class="card-text">📞 Ramal ${dir.ramal}</div>
+                        </div>
+                        <div>
+                            <div class="card-meta">Equipe</div>
+                            <div class="card-text">👥 ${dir.equipe} profissionais</div>
+                            <div class="card-text">📋 ${dir.projetos_ativos} projetos ativos</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function mostrarEquipe(diretoria) {
+            document.querySelectorAll('#aba-equipe .sub-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const equipe = dados.equipe[diretoria] || [];
+            document.getElementById('equipe-grid').innerHTML = equipe.map(e => `
+                <div class="card">
+                    <div class="equipe-item">
+                        <div class="equipe-foto">${e.foto}</div>
+                        <div class="equipe-info">
+                            <div class="equipe-nome">${e.nome}</div>
+                            <div class="equipe-cargo">${e.cargo}</div>
+                            <div class="equipe-ramal">Ramal ${e.ramal}</div>
+                        </div>
+                    </div>
+                    <div class="card-text">📧 ${e.email}</div>
+                    <div class="card-status">
+                        ${e.projetos.map(p => `<span class="badge">${p}</span>`).join(' ')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function mostrarFerramentas(diretoria) {
+            document.querySelectorAll('#aba-ferramentas .sub-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const ferramentas = dados.ferramentas[diretoria] || [];
+            document.getElementById('ferramentas-grid').innerHTML = ferramentas.map(f => `
+                <div class="card">
+                    <h3>${f.nome}</h3>
+                    <div class="card-text">${f.descricao}</div>
+                    <div class="card-meta">Responsável: ${f.responsavel}</div>
+                    <div class="card-status">
+                        <span class="badge">📅 ${f.ultimo_acesso}</span>
+                        <span class="badge" style="background:#51CF66; color:white;">${f.status}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function mostrarPrazos(filtro) {
+            document.querySelectorAll('#aba-prazos .sub-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            let prazos = dados.prazos || [];
+            if (filtro !== 'todos') {
+                prazos = prazos.filter(p => p.prioridade === filtro);
+            }
+            
+            document.getElementById('prazos-grid').innerHTML = `
+                <div class="grid">
+                    ${prazos.map(p => `
+                        <div class="card">
+                            <h3>${p.projeto}</h3>
+                            <div class="card-meta">${p.fase}</div>
+                            <div class="card-text">Responsável: ${p.responsavel}</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width:${p.progresso}%"></div>
+                            </div>
+                            <div class="card-status">
+                                <span class="badge ${p.prioridade === 'Alta' ? 'badge-alta' : p.prioridade === 'Média' ? 'badge-media' : 'badge-baixa'}">
+                                    ${p.prioridade}
+                                </span>
+                                <span class="badge ${p.status === 'Entregue' ? 'badge-entregue' : ''}">
+                                    📅 ${p.entrega}
+                                </span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function mostrarProjetos(diretoria) {
+            document.querySelectorAll('#aba-projetos .sub-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const projetos = dados.projetos_por_diretoria[diretoria] || [];
+            document.getElementById('projetos-grid').innerHTML = projetos.map(p => `
+                <div class="card">
+                    <h3>${p.nome}</h3>
+                    <div class="card-meta">${p.tipo}</div>
+                    <div class="card-text">Status: ${p.status}</div>
+                    <div class="card-text">📅 Prazo: ${p.prazo}</div>
+                    <div class="card-status">
+                        👥 ${p.equipe.slice(0,3).join(' • ')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function mudarAba(aba) {
+            document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.querySelectorAll('.aba-conteudo').forEach(el => el.style.display = 'none');
+            document.getElementById(`aba-${aba}`).style.display = 'block';
+        }
+
+        carregarDados();
+    </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1>{{ info.nome }}</h1>
+    <a href="{{ url_for('admin.new_item', modulo=modulo) }}" class="btn btn-success">➕ Novo</a>
+</div>
+
+{% if itens %}
+    <table>
+        <thead>
+            <tr>
+                {% for key in itens[0].keys() %}
+                    <th>{{ key }}</th>
+                {% endfor %}
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+                <tr>
+                    {% for value in item.values() %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                    <td>
+                        <a href="{{ url_for('admin.edit_item', modulo=modulo, id=item[info.id_field]) }}" class="btn">✏️</a>
+                        <form action="{{ url_for('admin.delete_item', modulo=modulo, id=item[info.id_field]) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza?')">🗑️</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Paginação -->
+    <div style="margin-top: 20px; text-align: center;">
+        {% if page > 1 %}
+            <a href="?page={{ page-1 }}&per_page={{ per_page }}" class="btn">Anterior</a>
+        {% endif %}
+        Página {{ page }} de {{ total_pages }}
+        {% if page < total_pages %}
+            <a href="?page={{ page+1 }}&per_page={{ per_page }}" class="btn">Próxima</a>
+        {% endif %}
+    </div>
+{% else %}
+    <p>Nenhum item encontrado.</p>
+{% endif %}
+{% endblock %}

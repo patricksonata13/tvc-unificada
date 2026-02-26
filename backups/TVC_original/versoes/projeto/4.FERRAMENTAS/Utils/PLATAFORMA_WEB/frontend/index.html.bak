@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TVC Studios</title>
+    <script>
+        setTimeout(() => window.location.href = '/', 1000);
+    </script>
+</head>
+<body>
+    <h1>Redirecionando...</h1>
+</body>
+</html>

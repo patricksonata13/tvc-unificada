@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TVC MEGA FINAL</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #8B7355; margin-bottom: 20px; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #8B7355;
+        }
+        .urgente { background: #ff4444; color: white; padding: 2px 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 TVC MEGA FINAL</h1>
+        <div class="stats" id="stats"></div>
+        <div class="grid" id="conteudo"></div>
+    </div>
+
+    <script>
+        fetch('/api/tudo')
+            .then(r => r.json())
+            .then(d => {
+                document.getElementById('stats').innerHTML = `
+                    <div class="card"><h3>Projetos</h3><h2>${d.stats.projetos}</h2></div>
+                    <div class="card"><h3>Notícias</h3><h2>${d.stats.noticias}</h2></div>
+                    <div class="card"><h3>Clubes</h3><h2>${d.stats.clubes}</h2></div>
+                `;
+                
+                let html = '';
+                d.escaleta.forEach(p => {
+                    html += `<div class="item"><h3>${p.nome}</h3><p>${p.tipo} • ${p.progresso}%</p></div>`;
+                });
+                document.getElementById('conteudo').innerHTML = html;
+            });
+    </script>
+</body>
+</html>

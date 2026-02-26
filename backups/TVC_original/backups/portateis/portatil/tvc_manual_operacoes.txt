@@ -1,0 +1,57 @@
+============================================================
+           TVC - MANUAL DE OPERAÇÕES DO MINI PROJAC
+============================================================
+VERSÃO: 1.0 (Unificada) | FOCO: RIO DE JANEIRO | MARCA: TVC
+
+1. ORGANOGRAMA E FAIXAS SALARIAIS (ESTIMADAS)
+------------------------------------------------------------
+NÚCLEO 1: OPERAÇÕES & LOGÍSTICA
+- Diretor de Logística: R$ 5.500,00 (Gere território e bases)
+- Produtor de Locação: R$ 3.500,00 (Negocia no campo)
+- Assistente de Set: R$ 2.200,00 (Operacional diário)
+
+NÚCLEO 2: PÓS-PRODUÇÃO (STUDIOS)
+- Coordenador de Pós: R$ 4.800,00 (Gere o pipeline de edição)
+- Editor Senior: R$ 4.000,00 (Finaliza as séries premium)
+- Editor de Social/Fast: R$ 2.800,00 (Foco em Novel Flix)
+
+NÚCLEO 3: JURÍDICO & RH (ECO)
+- Advogado Audiovisual: R$ 5.000,00 (Direitos e Editais)
+- Analista de RH/Talentos: R$ 3.000,00 (Gere Banco Raízes)
+
+NÚCLEO 4: TECNOLOGIA & PLAY
+- Desenvolvedor Fullstack: R$ 6.000,00 (Gere o App TVC Play)
+- Data Analyst: R$ 3.800,00 (Métricas de audiência)
+
+2. FLUXO OPERACIONAL INTEGRADO (SOP)
+------------------------------------------------------------
+PASSO A: CADASTRO (TVC ECO)
+- Todo projeto é registado no sistema com ID único.
+- Check de viabilidade financeira pelo núcleo administrativo.
+
+PASSO B: CRIAÇÃO (TVC PRO)
+- Sala de roteiro entrega a "Escaleta Final".
+- O Jurídico valida o uso de marcas e referências.
+
+PASSO C: PRODUÇÃO (TVC STUDIOS)
+- Logística liberta a verba de transporte e alimentação.
+- Filmagens entram na pasta ~/TVC4/TVC_STUDIOS/Brutos.
+
+PASSO D: PÓS-PRODUÇÃO & APROVAÇÃO
+- O script 'tvc_processor.py' automatiza a marca d'água.
+- O Diretor Geral (Você) dá o "OK" no ficheiro em 'Finalizados'.
+
+PASSO E: TRANSMISSÃO (TVC PLAY)
+- Upload para o servidor e ativação da campanha de marketing.
+
+3. GESTÃO DE INVENTÁRIO TÉCNICO
+------------------------------------------------------------
+- Câmeras (Kit A, B, C): Check-in/out via sistema.
+- Unidades Móveis: Monitorização de combustível e manutenção.
+- Arquivo Digital: Backup em redundância (Local + Cloud).
+
+4. MANIFESTO OPERACIONAL
+------------------------------------------------------------
+"A TVC é uma empresa leve, rápida e conectada. Não produzimos apenas
+vídeos, geramos ativos culturais e tecnologia de impacto."
+============================================================

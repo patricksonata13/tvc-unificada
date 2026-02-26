@@ -1,0 +1,39 @@
+============================================================
+           REVISÃO OPERACIONAL TVC - FEVEREIRO 2026
+============================================================
+
+1. ROTEIRO & DESENVOLVIMENTO (TVC PRO)
+------------------------------------------------------------
+PROJETO: O MATUTO (Série Rural-Urbana)
+- Status: Piloto em fase de escaleta final.
+- Conflito: O choque cultural entre o interior e a metrópole carioca.
+- Objetivo: 10 episódios de 15 minutos (Formato TVC Play).
+
+PROJETO: CATIÇO (Ação)
+- Status: Decupagem de cenas de dublê.
+- Locação Crítica: Cidade de Deus (Acessos e logística mapeados).
+
+2. PLANEJAMENTO DE PRODUÇÃO (TVC STUDIOS)
+------------------------------------------------------------
+- Cronograma: Início das gravações de "O Matuto" em 48h.
+- Equipamento: Kit Blackmagic 6K + Mavic 3 reservados (ID 1 e 2).
+- Equipe: 15 profissionais (Squad Raízes + Equipe Técnica).
+
+3. ORÇAMENTO DETALHADO (ADMINISTRATIVO)
+------------------------------------------------------------
+- Budget Estimado "O Matuto": R$ 45.000,00 (Temporada 01).
+- Distribuição: 
+  * 40% Talentos (Banco Raízes)
+  * 30% Logística/Catering/Transporte
+  * 20% Pós-Produção/VFX
+  * 10% Reserva de Contingência (Segurança)
+
+4. FLUXO DE RESPOSTA (AUTOMATIZADO)
+------------------------------------------------------------
+- Aprovação: Via script 'tvc_workflow_aprovacao.py'.
+- Backup: Automatizado para as 22h diárias.
+- Dashboard: Atualização em tempo real para investidores.
+
+============================================================
+ASSINATURA: DIREÇÃO GERAL TVC STUDIOS
+============================================================

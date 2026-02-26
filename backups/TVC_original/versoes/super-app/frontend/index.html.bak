@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUPER APP TVC - Tudo em Um</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 20px;
+        }
+        .container { max-width: 1600px; margin: 0 auto; }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0066CC, #0099FF, #00CCFF);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: "SUPER TVC";
+            position: absolute;
+            right: 30px;
+            bottom: -20px;
+            font-size: 120px;
+            opacity: 0.1;
+            font-weight: bold;
+            color: white;
+        }
+        .header h1 { font-size: 3.5em; margin-bottom: 10px; }
+        .header h1 span { color: #FFD700; }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 3px solid #0066CC;
+        }
+        .stat-value { font-size: 1.5em; font-weight: bold; color: #0099FF; }
+        .stat-label { font-size: 0.8em; color: #aaa; }
+        
+        /* Menu Principal */
+        .menu {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .menu-btn {
+            padding: 15px 25px;
+            background: #1a1a1a;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 120px;
+        }
+        .menu-btn:hover { background: #0066CC; transform: translateY(-2px); }
+        .menu-btn.active { background: #0066CC; }
+        
+        /* Conteúdo */
+        .content {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 30px;
+            min-height: 500px;
+        }
+        
+        /* Grids */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .card {
+            background: #2a2a2a;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #0066CC;
+        }
+        .card h3 { color: #FFD700; margin-bottom: 10px; }
+        
+        /* Progresso */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0066CC, #0099FF);
+            width: 0%;
+        }
+        
+        /* Notícias */
+        .urgent {
+            background: #ff4444;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        
+        /* Loading */
+        .loading { text-align: center; padding: 50px; color: #666; }
+        
+        @media (max-width: 1200px) {
+            .stats-grid { grid-template-columns: repeat(4, 1fr); }
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>SUPER <span>TVC</span></h1>
+            <p>📚 Escaleta Hub • 📺 TV Ultra • 📰 Jornalismo • ⚽ Esportes • 🛠️ Ferramentas • 💰 Financeiro • 👥 Equipe</p>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-grid" id="stats">
+            <div class="stat-card"><div class="stat-value" id="projetos">0</div><div class="stat-label">Projetos</div></div>
+            <div class="stat-card"><div class="stat-value" id="producoes">0</div><div class="stat-label">Produções</div></div>
+            <div class="stat-card"><div class="stat-value" id="videos">0</div><div class="stat-label">Vídeos</div></div>
+            <div class="stat-card"><div class="stat-value" id="equipe">0</div><div class="stat-label">Equipe</div></div>
+            <div class="stat-card"><div class="stat-value" id="equity">R$0</div><div class="stat-label">Equity</div></div>
+            <div class="stat-card"><div class="stat-value" id="noticias">0</div><div class="stat-label">Notícias</div></div>
+            <div class="stat-card"><div class="stat-value" id="jogos">0</div><div class="stat-label">Jogos</div></div>
+            <div class="stat-card"><div class="stat-value" id="clubes">0</div><div class="stat-label">Clubes</div></div>
+        </div>
+        
+        <!-- Menu -->
+        <div class="menu">
+            <button class="menu-btn active" onclick="mudarAba('inicio')">🏠 INÍCIO</button>
+            <button class="menu-btn" onclick="mudarAba('escaleta')">📚 ESCALETA</button>
+            <button class="menu-btn" onclick="mudarAba('tv')">📺 TV</button>
+            <button class="menu-btn" onclick="mudarAba('jornalismo')">📰 JORNALISMO</button>
+            <button class="menu-btn" onclick="mudarAba('esportes')">⚽ ESPORTES</button>
+            <button class="menu-btn" onclick="mudarAba('ferramentas')">🛠️ FERRAMENTAS</button>
+            <button class="menu-btn" onclick="mudarAba('financeiro')">💰 FINANCEIRO</button>
+            <button class="menu-btn" onclick="mudarAba('equipe')">👥 EQUIPE</button>
+        </div>
+        
+        <!-- Conteúdo -->
+        <div class="content" id="content">
+            <div class="loading">Carregando SUPER APP TVC...</div>
+        </div>
+    </div>
+
+    <script>
+        const API = '';
+        
+        // Stats
+        async function carregarStats() {
+            try {
+                const res = await fetch('/api/stats');
+                const data = await res.json();
+                document.getElementById('projetos').textContent = data.projetos;
+                document.getElementById('producoes').textContent = data.producoes_ativas;
+                document.getElementById('videos').textContent = data.videos;
+                document.getElementById('equipe').textContent = data.equipe;
+                document.getElementById('equity').textContent = 'R$' + Math.round(data.equity_brl/1000) + 'k';
+                document.getElementById('noticias').textContent = data.noticias_hoje;
+                document.getElementById('jogos').textContent = data.jogos_proximos;
+                document.getElementById('clubes').textContent = data.clubes;
+            } catch(e) { console.log(e); }
+        }
+        
+        // Navegação
+        function mudarAba(aba) {
+            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (aba === 'inicio') carregarInicio();
+            if (aba === 'escaleta') carregarEscaleta();
+            if (aba === 'tv') carregarTV();
+            if (aba === 'jornalismo') carregarJornalismo();
+            if (aba === 'esportes') carregarEsportes();
+            if (aba === 'ferramentas') carregarFerramentas();
+            if (aba === 'financeiro') carregarFinanceiro();
+            if (aba === 'equipe') carregarEquipe();
+        }
+        
+        // INÍCIO
+        async function carregarInicio() {
+            const div = document.getElementById('content');
+            div.innerHTML = '<div class="loading">Carregando...</div>';
+            
+            try {
+                const res = await fetch('/api/tudo');
+                const d = await res.json();
+                
+                let html = '<h2 style="margin-bottom: 20px;">🏠 PAINEL PRINCIPAL</h2>';
+                
+                // Destaques
+                html += '<div class="grid-4" style="margin-bottom: 30px;">';
+                html += `<div class="card"><h3>📚 Projetos</h3><div style="font-size: 2em;">${d.stats.projetos}</div><div>${d.escaleta.longas.length} longas, ${d.escaleta.series.length} séries</div></div>`;
+                html += `<div class="card"><h3>📰 Notícias</h3><div style="font-size: 2em;">${d.jornalismo.ultimas.length}</div><div>${d.jornalismo.ultimas.filter(n => n.status === 'urgente').length} urgentes</div></div>`;
+                html += `<div class="card"><h3>⚽ Jogos</h3><div style="font-size: 2em;">${d.esportes.jogos.length}</div><div>Próximo: ${d.esportes.jogos[0].time1} x ${d.esportes.jogos[0].time2}</div></div>`;
+                html += `<div class="card"><h3>💰 Equity</h3><div style="font-size: 1.5em; color: #00cc66;">R$ ${d.stats.equity_brl.toLocaleString('pt-BR')}</div></div>`;
+                html += '</div>';
+                
+                // Últimas notícias
+                html += '<h3 style="margin: 20px 0;">🔴 Últimas Notícias</h3><div class="grid-3">';
+                d.jornalismo.ultimas.slice(0, 3).forEach(n => {
+                    html += `<div class="card">${n.status === 'urgente' ? '<span class="urgent">URGENTE</span>' : ''}<div style="font-weight: bold;">${n.titulo}</div><div style="color: #888;">📍 ${n.bairro} • ${n.hora}</div></div>`;
+                });
+                html += '</div>';
+                
+                // Próximos jogos
+                html += '<h3 style="margin: 20px 0;">⚽ Próximos Jogos</h3><div class="grid-3">';
+                d.esportes.jogos.slice(0, 3).forEach(j => {
+                    html += `<div class="card"><div style="font-weight: bold;">${j.time1} vs ${j.time2}</div><div>📅 ${j.data} • ${j.hora}</div><div>📍 ${j.local}</div></div>`;
+                });
+                html += '</div>';
+                
+                div.innerHTML = html;
+            } catch(e) {
+                div.innerHTML = '<div class="loading">Erro ao carregar</div>';
+            }
+        }
+        
+        // ESCALETA HUB
+        async function carregarEscaleta() {
+            const div = document.getElementById('content');
+            div.innerHTML = '<div class="loading">Carregando Escaleta Hub...</div>';
+            
+            try {
+                const res = await fetch('/api/escaleta/tudo');
+                const d = await res.json();
+                
+                let html = '<h2 style="margin-bottom: 20px;">📚 ESCALETA HUB - 23 PROJETOS</h2>';
+                
+                // Longas
+                html += '<h3 style="margin: 20px 0 10px;">🎬 Longas (5)</h3><div class="grid-4">';
+                d.longas.forEach(p => {
+                    html += `<div class="card"><h4>${p.nome}</h4><div>${p.genero}</div><div>${p.status} • ${p.progresso}%</div><div class="progress-bar"><div class="progress-fill" style="width:${p.progresso}%"></div></div><div style="font-size:0.8em;">${p.visao}</div></div>`;
+                });
+                html += '</div>';
+                
+                // Séries
+                html += '<h3 style="margin: 30px 0 10px;">📺 Séries (2)</h3><div class="grid-4">';
+                d.series.forEach(p => {
+                    html += `<div class="card"><h4>${p.nome}</h4><div>${p.genero}</div><div>${p.status} • ${p.progresso}%</div><div class="progress-bar"><div class="progress-fill" style="width:${p.progresso}%"></div></div><div>${p.visao}</div></div>`;
+                });
+                html += '</div>';
+                
+                // Mini Novelas
+                html += '<h3 style="margin: 30px 0 10px;">📱 Mini Novelas (5+)</h3><div class="grid-4">';
+                d.mininovelas.forEach(p => {
+                    html += `<div class="card"><h4>${p.nome}</h4><div>${p.genero}</div><div>${p.status} • ${p.progresso}%</div><div class="progress-bar"><div class="progress-fill" style="width:${p.progresso}%"></div></div><div>${p.visao}</div></div>`;
+                });
+                html += '</div>';
+                
+                div.innerHTML = html;
+            } catch(e) {
+                div.innerHTML = '<div class="loading">Erro ao carregar</div>';
+            }
+        }
+        
+        // TV ULTRA
+        async function carregarTV() {
+            const div = document.getElementById('content');
+            div.innerHTML = '<div class="loading">Carregando TV Ultra...</div>';
+            
+            try {
+                const res = await fetch('/api/tv/tudo');
+                const d = await res.json();
+                
+                let html = '<h2 style="margin-bottom: 20px;">📺 TV ULTRA</h2>';
+                
+                // Programação
+                html += '<h3 style="margin: 20px 0;">📅 Programação</h3><div style="display:grid; grid-template-columns:repeat(3,1fr); gap:15px;">';
+                const dias = ['segunda', 'terca', 'quarta'];
+                const nomes = ['Segunda', 'Terça', 'Quarta'];
+                
+                for(let i=0; i<dias.length; i++) {
+                    html += `<div style="background:#2a2a2a; padding:15px; border-radius:10px;"><h4 style="color:#0099FF;">${nomes[i]}</h4>`;
+                    d.programacao[dias[i]].forEach(p => {
+                        html += `<div style="margin:5px 0;"><span style="color:#FFD700;">${p.horario}</span> - ${p.programa}</div>`;
+                    });
+                    html += '</div>';
+                }
+                html += '</div>';
+                
+                // Produções
+                html += '<h3 style="margin: 30px 0 15px;">🎬 Produções</h3><div class="grid-4">';
+                d.producoes.forEach(p => {
+                    html += `<div class="card"><h4>${p.nome}</h4><div>${p.tipo} • ${p.status}</div><div class="progress-bar"><div class="progress-fill" style="width:${p.progresso}%"></div></div><div style="text-align:right;">${p.progresso}%</div></div>`;
+                });
+                html += '</div>';
+                
+                div.innerHTML = html;
+            } catch(e) {
+                div.innerHTML = '<div class="loading">Erro ao carregar</div>';
+            }
+        }
+        
+        // JORNALISMO
+        async function carregarJornalismo() {
+            const div = document.getElementById('content');
+            div.innerHTML = '<div class="loading">Carregando Jornalismo...</div>';
+            
+            try {
+                const res = await fetch('/api/jornalismo/tudo');
+                const d = await res.json();
+                
+                let html = '<h2 style="margin-bottom: 20px;">📰 JORNALISMO RIO</h2>';
+                
+                // Últimas
+                html += '<h3 style="margin: 20px 0;">🔴 Últimas Notícias</h3><div class="grid-3">';
+                d.ultimas.forEach(n => {
+                    html += `<div class="card">${n.status === 'urgente' ? '<span class="urgent">URGENTE</span>' : ''}<div style="font-weight: bold;">${n.titulo}</div><div style="color:#888;">📍 ${n.bairro} • ${n.hora}</div></div>`;
+                });
+                html += '</div>';
+                
+                // Repórteres
+                html += '<h3 style="margin: 30px 0 15px;">🎤 Repórteres</h3><div class="grid-4">';
+                d.reporteres.forEach(r => {
+                    html += `<div class="card"><h4>${r.nome}</h4><div>📍 ${r.regiao}</div><div>${r.especialidade}</div></div>`;
+                });
+                html += '</div>';
+                
+                // Pautas
+                html += '<h3 style="margin: 30px 0 15px;">📋 Pautas</h3><div style="background:#2a2a2a; padding:15px; border-radius:10px;">';
+                d.pautas.forEach(p => {
+                    html += `<div style="margin:10px 0; padding:10px; background:#1a1a1a; border-radius:5px;"><span style="color:${p.prioridade==='alta'?'#ff4444':p.prioridade==='media'?'#ffaa00':'#00cc66'};">●</span> ${p.titulo} - ${p.status}</div>`;
+                });
+                html += '</div>';
+                
+                div.innerHTML = html;
+            } catch(e) {
+                div.innerHTML = '<div class="loading">Erro ao carregar</div>';
+            }
+        }
+        
+        // ESPORTES
+        async function carregarEsportes() {
+            const div = document.getElementById('content');
+            div.innerHTML = '<div class="loading">Carregando Esportes...</div>';
+            
+            try {
+                const res = await fetch('/api/esportes/tudo');
+                const d = await res.json();
+                
+                let html = '<h2 style="margin-bottom: 20px;">⚽ ESPORTES RIO</h2>';
+                
+                // Classificação
+                html += '<h3 style="margin: 20px 0;">📊 Classificação</h3><div style="background:#2a2a2a; padding:15px; border-radius:10px;">';
+                html += '<table style="width:100%; border-collapse:collapse;">';
+                html += '<tr style="border-bottom:2px solid #0066CC;"><th>Time</th><th>Pts</th><th>J</th><th>V</th></tr>';
+                d.clubes.forEach(c => {
+                    html += `<tr style="border-bottom:1px solid #333;"><td style="padding:8px;"><strong>${c.nome}</strong></td><td>${c.pontos}</td><td>${c.jogos}</td><td>${c.vitorias}</td></tr>`;
+                });
+                html += '</table></div>';
+                
+                // Jogos
+                html += '<h3 style="margin: 30px 0 15px;">📅 Próximos Jogos</h3><div class="grid-3">';
+                d.jogos.forEach(j => {
+                    html += `<div class="card"><div style="font-size:1.2em;">${j.time1} vs ${j.time2}</div><div>📅 ${j.data} • ${j.hora}</div><div>📍 ${j.local}</div></div>`;
+                });
+                html += '</div>';
+                
+                // Comentaristas
+                html += '<h3 style="margin: 30px 0 15px;">🎤 Comentaristas</h3><div class="grid-4">';
+                d.comentaristas.forEach(c => {
+                    html += `<div class="card"><h4>${c.nome}</h4><div>${c.especialidade}</div></div>`;
+                });
+                html += '</div>';
+                
+                div.innerHTML = html;
+            } catch(e) {
+                div.innerHTML = '<div class="loading">Erro ao carregar</div>';
+            }
+        }
+        
+        // FERRAMENTAS
+        async function carregarFerramentas() {
+            const div = document.getElementById('content');
+            div.innerHTML = '<div class="loading">Carregando Ferramentas...</div>';
+            
+            try {
+                const res = await fetch('/api/ferramentas');
+                const f = await res.json();
+                
+                let html = '<h2 style="margin-bottom: 20px;">🛠️ FERRAMENTAS DE PRODUÇÃO</h2>';
+                html += '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:20px;">';
+                
+                f.forEach(t => {
+                    html += `
+                        <div onclick="executarAcao('${t.acao}')" style="background:#2a2a2a; padding:20px; border-radius:10px; text-align:center; cursor:pointer; border:1px solid #0066CC; transition:0.3s;" onmouseover="this.style.background='#0066CC'" onmouseout="this.style.background='#2a2a2a'">
+                            <div style="font-size:3em;">${t.icone}</div>
+                            <div style="font-weight:bold; margin:10px 0;">${t.nome}</div>
+                            <div style="font-size:0.8em; color:#aaa;">${t.desc}</div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                div.innerHTML = html;
+            } catch(e) {
+                div.innerHTML = '<div class="loading">Erro ao carregar</div>';
+            }
+        }
+        
+        // FINANCEIRO
+        async function carregarFinanceiro() {
+            const div = document.getElementById('content');
+            div.innerHTML = '<div class="loading">Carregando Financeiro...</div>';
+            
+            try {
+                const res = await fetch('/api/financeiro');
+                const f = await res.json();
+                
+                let html = '<h2 style="margin-bottom: 20px;">💰 FINANCEIRO</h2>';
+                
+                html += '<div class="grid-3" style="margin-bottom:30px;">';
+                html += `<div class="card"><h3>Equity BRL</h3><div style="font-size:2em; color:#00cc66;">R$ ${f.equity_brl.toLocaleString('pt-BR')}</div></div>`;
+                html += `<div class="card"><h3>Equity USD</h3><div style="font-size:2em; color:#0099FF;">$ ${f.equity_usd.toLocaleString('pt-BR')}</div></div>`;
+                html += `<div class="card"><h3>Orçamento Total</h3><div style="font-size:1.5em;">R$ ${f.orcamento_total.toLocaleString('pt-BR')}</div></div>`;
+                html += '</div>';
+                
+                html += '<h3 style="margin:20px 0;">📊 Orçamento por Projeto</h3><div class="grid-3">';
+                f.projetos.forEach(p => {
+                    html += `<div class="card"><h4>${p.nome}</h4><div>Orçamento: R$ ${p.orcamento.toLocaleString('pt-BR')}</div><div>Gasto: R$ ${p.gasto.toLocaleString('pt-BR')}</div><div class="progress-bar"><div class="progress-fill" style="width:${(p.gasto/p.orcamento*100)}%"></div></div></div>`;
+                });
+                html += '</div>';
+                
+                div.innerHTML = html;
+            } catch(e) {
+                div.innerHTML = '<div class="loading">Erro ao carregar</div>';
+            }
+        }
+        
+        // EQUIPE
+        async function carregarEquipe() {
+            const div = document.getElementById('content');
+            div.innerHTML = '<div class="loading">Carregando Equipe...</div>';
+            
+            try {
+                const res = await fetch('/api/equipe');
+                const e = await res.json();
+                
+                let html = '<h2 style="margin-bottom: 20px;">👥 EQUIPE TVC</h2>';
+                html += '<div class="grid-4">';
+                
+                e.forEach(p => {
+                    html += `<div class="card"><h4>${p.nome}</h4><div>${p.funcao}</div><div style="color:#0099FF;">${p.area}</div></div>`;
+                });
+                
+                html += '</div>';
+                div.innerHTML = html;
+            } catch(e) {
+                div.innerHTML = '<div class="loading">Erro ao carregar</div>';
+            }
+        }
+        
+        // Ações
+        function executarAcao(acao) {
+            fetch(`/api/acao/${acao}`)
+                .then(r => r.json())
+                .then(d => alert(d.status));
+        }
+        
+        // Inicializar
+        carregarStats();
+        carregarInicio();
+        setInterval(carregarStats, 30000);
+    </script>
+</body>
+</html>

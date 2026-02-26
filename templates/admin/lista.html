@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - {{ modulo }} - TVC</title>
+    <link rel="stylesheet" href="/static/css/estilo.css">
+    <style>
+        .admin-container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .header-lista { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .btn { padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; color: white; }
+        .btn-novo { background: #4caf50; }
+        .btn-voltar { background: #2196f3; }
+        .btn-editar { background: #ff9800; }
+        .btn-excluir { background: #f44336; border: none; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #667eea; color: white; }
+        tr:hover { background: #f5f5f5; }
+        .acoes { display: flex; gap: 0.5rem; }
+        .acoes form { display: inline; }
+        .flash { padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .flash.success { background: #d4edda; color: #155724; }
+        .flash.error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📺 TVC - Admin: {{ modulo }}</h1>
+        <div style="text-align: center; margin-top: 0.5rem;">
+            <a href="{{ url_for('admin.index') }}" class="btn btn-voltar">Voltar ao painel</a>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="header-lista">
+            <h2>Lista de itens</h2>
+            <a href="{{ url_for('admin.novo', modulo=modulo) }}" class="btn btn-novo">+ Novo</a>
+        </div>
+
+        {% if itens and itens|length > 0 %}
+            <table>
+                <thead>
+                    <tr>
+                        {% for key in itens[0].keys() %}
+                            <th>{{ key }}</th>
+                        {% endfor %}
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in itens %}
+                        <tr>
+                            {% for value in item.values() %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                            <td class="acoes">
+                                <a href="{{ url_for('admin.editar', modulo=modulo, id=item[info.id_field]) }}" class="btn btn-editar">Editar</a>
+                                <form action="{{ url_for('admin.excluir', modulo=modulo, id=item[info.id_field]) }}" method="post" onsubmit="return confirm('Tem certeza que deseja excluir?');">
+                                    <button type="submit" class="btn btn-excluir">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Nenhum item encontrado neste módulo.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h1 style="margin-bottom: 20px;">Módulos</h1>
+<div class="grid-modulos">
+    {% for chave, info in modulos.items() %}
+        <a href="{{ url_for('admin.list_items', modulo=chave) }}" class="card-modulo">
+            <h3>{{ info.nome }}</h3>
+            <p style="color: #667eea; margin-top: 10px;">Gerenciar →</p>
+        </a>
+    {% endfor %}
+</div>
+{% endblock %}

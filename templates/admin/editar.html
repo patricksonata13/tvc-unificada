@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - {% if item %}Editar{% else %}Novo{% endif %} {{ modulo }} - TVC</title>
+    <link rel="stylesheet" href="/static/css/estilo.css">
+    <style>
+        .admin-container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; font-weight: bold; margin-bottom: 0.25rem; }
+        input, textarea { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; }
+        textarea { min-height: 100px; }
+        .btn { padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; color: white; border: none; cursor: pointer; }
+        .btn-salvar { background: #4caf50; }
+        .btn-cancelar { background: #f44336; }
+        .flash { padding: 1rem; margin: 1rem 0; border-radius: 4px; }
+        .flash.success { background: #d4edda; color: #155724; }
+        .flash.error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📺 TVC - {% if item %}Editar{% else %}Novo{% endif %} {{ modulo }}</h1>
+        <div style="text-align: center; margin-top: 0.5rem;">
+            <a href="{{ url_for('admin.listar', modulo=modulo) }}" class="btn btn-cancelar">Cancelar</a>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="post">
+            {% for campo in campos %}
+                <div class="form-group">
+                    <label for="{{ campo }}">{{ campo|capitalize }}</label>
+                    {% if campo == 'descricao' or campo == 'conteudo' %}
+                        <textarea name="{{ campo }}" id="{{ campo }}">{% if item %}{{ item[campo] }}{% endif %}</textarea>
+                    {% else %}
+                        <input type="text" name="{{ campo }}" id="{{ campo }}" value="{% if item %}{{ item[campo] }}{% endif %}">
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-salvar">Salvar</button>
+        </form>
+    </div>
+</body>
+</html>

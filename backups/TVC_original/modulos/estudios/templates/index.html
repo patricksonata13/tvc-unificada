@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estúdios - Mini-Projac</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --areia-100: #F5F0E6;
+            --areia-200: #E8E0D5;
+            --areia-300: #D9CFC0;
+            --amarelo: #E4B363;
+            --cinza-900: #2C2C2C;
+            --cinza-700: #4A4A4A;
+            --cinza-500: #8C8C8C;
+            --branco: #FFFFFF;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--areia-100);
+            color: var(--cinza-900);
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--branco);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: var(--cinza-900);
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+            border-bottom: 2px solid var(--amarelo);
+            padding-bottom: 10px;
+        }
+        h1 span { color: var(--amarelo); }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: var(--areia-200);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid var(--amarelo);
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--amarelo);
+            line-height: 1.2;
+        }
+        .stat-label {
+            color: var(--cinza-700);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--areia-300);
+            padding-bottom: 10px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--areia-300);
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--cinza-700);
+            transition: all 0.2s;
+            background: var(--branco);
+        }
+        .tab:hover {
+            border-color: var(--amarelo);
+            color: var(--amarelo);
+        }
+        .tab.active {
+            background: var(--amarelo);
+            border-color: var(--amarelo);
+            color: var(--branco);
+        }
+        
+        .content {
+            background: var(--branco);
+            border-radius: 8px;
+            padding: 25px;
+            min-height: 400px;
+            border: 1px solid var(--areia-300);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: var(--areia-100);
+            border: 1px solid var(--areia-300);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+            border-color: var(--amarelo);
+        }
+        .card h3 {
+            color: var(--cinza-900);
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+        .card-tag {
+            color: var(--amarelo);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .card p {
+            color: var(--cinza-700);
+            margin: 5px 0;
+            font-size: 0.95rem;
+        }
+        .card-footer {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--areia-300);
+            font-size: 0.9rem;
+            color: var(--cinza-500);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--cinza-500);
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--areia-300);
+            text-align: center;
+            color: var(--cinza-500);
+            font-size: 0.85rem;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎥 <span>Estúdios</span></h1>
+        
+        <div class="stats-grid" id="stats"></div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="aba('equipe')">👥 Equipe</button>
+            <button class="tab" onclick="aba('equipamentos')">🎥 Equipamentos</button>
+            <button class="tab" onclick="aba('materiais')">📦 Materiais</button>
+            <button class="tab" onclick="aba('fluxo')">📋 Fluxo</button>
+            <button class="tab" onclick="aba('agenda')">📅 Agenda</button>
+            <button class="tab" onclick="aba('escalas')">📝 Escalas</button>
+        </div>
+        
+        <div class="content" id="conteudo">
+            <div class="loading">Carregando...</div>
+        </div>
+        
+        <div class="footer">
+            © 2026 TVC - Gestão de Estúdio
+        </div>
+    </div>
+
+    <script>
+        let dados = {};
+        
+        async function carregarDados() {
+            try {
+                const res = await fetch('/api/tudo');
+                dados = await res.json();
+                
+                document.getElementById('stats').innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-value">${dados.equipe.length}</div>
+                        <div class="stat-label">Equipe</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${dados.equipamentos.length}</div>
+                        <div class="stat-label">Equipamentos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${dados.materiais.length}</div>
+                        <div class="stat-label">Materiais</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${dados.fluxo.length}</div>
+                        <div class="stat-label">Tarefas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${dados.agenda.length}</div>
+                        <div class="stat-label">Eventos</div>
+                    </div>
+                `;
+                
+                aba('equipe');
+            } catch(e) {
+                document.getElementById('conteudo').innerHTML = '<div class="loading">Erro ao carregar dados</div>';
+            }
+        }
+        
+        function aba(nome) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            let html = '';
+            
+            if (nome === 'equipe') {
+                html = '<div class="grid">';
+                dados.equipe.forEach(p => {
+                    html += `
+                        <div class="card">
+                            <div class="card-tag">${p.funcao}</div>
+                            <h3>${p.nome}</h3>
+                            <p>📞 ${p.contato}</p>
+                            <p>📌 Projetos: ${p.projetos.join(', ') || 'Nenhum'}</p>
+                            <div class="card-footer">${p.disponibilidade}</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+            } else if (nome === 'equipamentos') {
+                html = '<div class="grid">';
+                dados.equipamentos.forEach(e => {
+                    let disp = (e.disponiveis / e.quantidade * 100).toFixed(0);
+                    html += `
+                        <div class="card">
+                            <h3>${e.nome}</h3>
+                            <p>🔧 ${e.tipo}</p>
+                            <p>📍 ${e.localizacao}</p>
+                            <div style="background:var(--areia-300); height:6px; margin:10px 0; border-radius:3px;">
+                                <div style="height:6px; width:${disp}%; background:var(--amarelo); border-radius:3px;"></div>
+                            </div>
+                            <div class="card-footer">Disponível: ${e.disponiveis}/${e.quantidade} • ${e.status}</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+            } else if (nome === 'materiais') {
+                html = '<div class="grid">';
+                dados.materiais.forEach(m => {
+                    let disp = (m.disponiveis / m.quantidade * 100).toFixed(0);
+                    html += `
+                        <div class="card">
+                            <h3>${m.nome}</h3>
+                            <p>${m.tipo}</p>
+                            <div style="background:var(--areia-300); height:6px; margin:10px 0; border-radius:3px;">
+                                <div style="height:6px; width:${disp}%; background:var(--amarelo); border-radius:3px;"></div>
+                            </div>
+                            <div class="card-footer">Disponível: ${m.disponiveis}/${m.quantidade} ${m.unidade}</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+            } else if (nome === 'fluxo') {
+                html = '<div class="grid">';
+                dados.fluxo.forEach(f => {
+                    html += `
+                        <div class="card">
+                            <div class="card-tag">${f.projeto}</div>
+                            <h3>${f.tarefa}</h3>
+                            <p>👤 ${f.responsavel}</p>
+                            <p>📅 Prazo: ${f.prazo}</p>
+                            <div class="card-footer">${f.status} • ${f.prioridade}</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+            } else if (nome === 'agenda') {
+                html = '<div class="grid">';
+                dados.agenda.forEach(a => {
+                    html += `
+                        <div class="card">
+                            <div class="card-tag">${a.tipo}</div>
+                            <h3>${a.titulo}</h3>
+                            <p>📅 ${a.data} • ${a.hora_inicio}-${a.hora_fim}</p>
+                            <p>📍 ${a.local}</p>
+                            <div class="card-footer">Participantes: ${a.participantes.join(', ')}</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+            } else if (nome === 'escalas') {
+                html = '<div class="grid">';
+                dados.escalas.forEach(e => {
+                    html += `
+                        <div class="card">
+                            <div class="card-tag">${e.status}</div>
+                            <h3>${e.projeto}</h3>
+                            <p>📅 ${e.data} • ${e.horario}</p>
+                            <p>📍 ${e.local}</p>
+                            <p>🎬 ${e.equipe.join(', ')}</p>
+                            <p>🎭 ${e.elenco.join(', ')}</p>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            
+            document.getElementById('conteudo').innerHTML = html;
+        }
+        
+        carregarDados();
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVC Unificado</title>
+    <link rel="stylesheet" href="/static/css/estilo.css">
+    <meta name="logged-in" content="{{ 'true' if logged_in else 'false' }}">
+</head>
+<body>
+    <header>
+        <h1>📺 TVC - Plataforma Unificada</h1>
+        <p>Todos os módulos em um só lugar</p>
+        {% if not logged_in %}
+            <a href="/login" style="color: white; text-decoration: underline;">Login</a>
+        {% else %}
+            <span>Olá, <strong>{{ current_user.id }}</strong> | <a href="/admin" style="color: white; text-decoration: underline;">Admin</a> | <a href="/logout" style="color: white; text-decoration: underline;">Sair</a></span>
+        {% endif %}
+    </header>
+
+    <nav class="modulos-nav">
+        <button class="modulo-btn ativo" data-modulo="escaleta">🎬 Escaleta</button>
+        <button class="modulo-btn" data-modulo="jornalismo">📰 Jornalismo</button>
+        <button class="modulo-btn" data-modulo="esportes">⚽ Esportes</button>
+        <button class="modulo-btn" data-modulo="estudios">🎥 Estúdios</button>
+        <button class="modulo-btn" data-modulo="financeiro">💰 Financeiro</button>
+    </nav>
+
+    <main id="conteudo-modulo">
+        <div class="loading">Carregando...</div>
+    </main>
+
+    <script type="module" src="/static/js/app.js"></script>
+</body>
+</html>
