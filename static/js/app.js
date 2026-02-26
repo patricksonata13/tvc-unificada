@@ -33,26 +33,6 @@ function updateHash(modulo, subAba = '') {
     history.pushState(null, '', hash);
 }
 
-// Função para adicionar botões de edição nos cards (se logado)
-function adicionarBotoesEdicao(modulo, dados) {
-    if (!loggedIn) return;
-    const cards = document.querySelectorAll('.card');
-    cards.forEach((card, index) => {
-        // Tenta encontrar o ID do item – depende de como o card foi construído
-        // Simplificação: adiciona um link no final do card
-        const id = dados[index]?.id; // só funciona se a ordem dos cards corresponder à ordem dos dados
-        if (id) {
-            const editLink = document.createElement('a');
-            editLink.href = `/admin/${modulo}/${id}/editar`;
-            editLink.textContent = ' ✏️ Editar';
-            editLink.style.display = 'block';
-            editLink.style.marginTop = '10px';
-            editLink.style.color = '#667eea';
-            card.appendChild(editLink);
-        }
-    });
-}
-
 async function iniciar() {
     dadosCompletos = await carregarDados();
     if (!dadosCompletos) {
@@ -86,7 +66,7 @@ function exibirModulo(modulo, subAba = null) {
             html = renderJornalismo(dadosCompletos.jornalismo, subAba || 'todas');
             break;
         case 'esportes':
-            html = renderEsportes(dadosCompletos, subAba || 'brasileirao');
+            html = renderEsportes(dadosCompletos, subAba || 'inicio');
             break;
         case 'estudios':
             html = renderEstudios(dadosCompletos.estudios, subAba || 'equipe');
@@ -100,23 +80,7 @@ function exibirModulo(modulo, subAba = null) {
 
     conteudoModulo.innerHTML = html;
 
-    // Adiciona botões de edição se logado (apenas para módulos com cards)
-    if (loggedIn && modulo !== 'financeiro' && modulo !== 'esportes') {
-        // Para esportes, a estrutura é diferente; poderíamos tratar depois
-        // Simplificando: só para escaleta, jornalismo e estudios
-        if (modulo === 'escaleta' && dadosCompletos.escaleta) {
-            adicionarBotoesEdicao(modulo, dadosCompletos.escaleta);
-        }
-        if (modulo === 'jornalismo' && dadosCompletos.jornalismo) {
-            adicionarBotoesEdicao(modulo, dadosCompletos.jornalismo);
-        }
-        if (modulo === 'estudios') {
-            // Para estudios, os cards são dinâmicos conforme sub-aba
-            // Vamos deixar para uma versão futura
-        }
-    }
-
-    // Anexa eventos de sub-aba (já existentes)
+    // Anexa eventos de sub-aba (apenas para módulos que têm sub-abas)
     if (modulo === 'jornalismo' && dadosCompletos.jornalismo) {
         attachSubAbasJornalismo(dadosCompletos.jornalismo);
         if (subAba) {

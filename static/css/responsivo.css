@@ -1,0 +1,47 @@
+@media (max-width: 768px) {
+    .modulos-nav {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1rem;
+    }
+
+    .modulo-btn {
+        width: 100%;
+    }
+
+    .sub-abas {
+        flex-wrap: wrap;
+    }
+
+    .sub-aba-btn {
+        flex: 1 1 auto;
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+
+    .card-container {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 1rem;
+    }
+
+    .tabela {
+        font-size: 0.85rem;
+    }
+
+    .tabela th, .tabela td {
+        padding: 0.5rem;
+    }
+
+    header::before, header::after {
+        font-size: 4rem;
+    }
+}

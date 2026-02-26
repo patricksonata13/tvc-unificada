@@ -2,7 +2,7 @@ import sqlite3
 import os
 from modulos.escaleta.escaleta import ESCALETA_PROJETOS
 from modulos.jornalismo.jornalismo import JORNALISMO_NOTICIAS
-from modulos.esportes.esportes import ESPORTES_CLUBES, BRASILEIRAO, CARIOCA
+from modulos.esportes.esportes import ESPORTES_CLUBES, BRASILEIRAO, CARIOCA, OUTROS_TIMES_RIO, VOLEI_TIMES, HANDEBOL_TIMES
 from modulos.estudios.estudios import EQUIPE, EQUIPAMENTOS, MATERIAIS, FLUXO, AGENDA, ESCALAS
 from modulos.financeiro.financeiro import MASTER_FINANCEIRO
 
@@ -12,10 +12,8 @@ def get_connection():
     return sqlite3.connect(DB_PATH)
 
 def init_db():
-    """Cria as tabelas se não existirem."""
     conn = get_connection()
     cursor = conn.cursor()
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS escaleta (
             id INTEGER PRIMARY KEY,
@@ -29,7 +27,6 @@ def init_db():
             descricao TEXT
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS jornalismo (
             id INTEGER PRIMARY KEY,
@@ -41,7 +38,6 @@ def init_db():
             views INTEGER
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS clubes (
             id INTEGER PRIMARY KEY,
@@ -51,7 +47,33 @@ def init_db():
             titulos INTEGER
         )
     ''')
-
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS outros_times (
+            id INTEGER PRIMARY KEY,
+            nome TEXT,
+            estadio TEXT,
+            tecnico TEXT,
+            titulos INTEGER
+        )
+    ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS volei (
+            id INTEGER PRIMARY KEY,
+            nome TEXT,
+            cidade TEXT,
+            ginasio TEXT,
+            titulos INTEGER
+        )
+    ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS handebol (
+            id INTEGER PRIMARY KEY,
+            nome TEXT,
+            cidade TEXT,
+            ginasio TEXT,
+            titulos INTEGER
+        )
+    ''')
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS brasileirao (
             pos INTEGER PRIMARY KEY,
@@ -61,7 +83,6 @@ def init_db():
             vitorias INTEGER
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS carioca (
             pos INTEGER PRIMARY KEY,
@@ -69,7 +90,6 @@ def init_db():
             pontos INTEGER
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS equipe (
             id INTEGER PRIMARY KEY,
@@ -81,7 +101,6 @@ def init_db():
             projetos TEXT
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS equipamentos (
             id INTEGER PRIMARY KEY,
@@ -93,7 +112,6 @@ def init_db():
             localizacao TEXT
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS materiais (
             id INTEGER PRIMARY KEY,
@@ -104,7 +122,6 @@ def init_db():
             unidade TEXT
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS fluxo (
             id INTEGER PRIMARY KEY,
@@ -116,7 +133,6 @@ def init_db():
             prioridade TEXT
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS agenda (
             id INTEGER PRIMARY KEY,
@@ -126,7 +142,6 @@ def init_db():
             responsavel TEXT
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS escalas (
             id INTEGER PRIMARY KEY,
@@ -136,19 +151,16 @@ def init_db():
             local TEXT
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS financeiro (
             chave TEXT PRIMARY KEY,
             valor TEXT
         )
     ''')
-
     conn.commit()
     conn.close()
 
 def populate_db():
-    """Insere dados iniciais se as tabelas estiverem vazias, com tratamento de erros."""
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -170,7 +182,7 @@ def populate_db():
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             ''', (n['id'], n['titulo'], n['categoria'], n['data'], n['autor'], n['conteudo'], n['views']))
 
-    # Clubes
+    # Clubes principais
     cursor.execute("SELECT COUNT(*) FROM clubes")
     if cursor.fetchone()[0] == 0 and ESPORTES_CLUBES:
         for c in ESPORTES_CLUBES:
@@ -178,6 +190,33 @@ def populate_db():
                 INSERT INTO clubes (id, nome, estadio, tecnico, titulos)
                 VALUES (?, ?, ?, ?, ?)
             ''', (c['id'], c['nome'], c['estadio'], c['tecnico'], c['titulos']))
+
+    # Outros times
+    cursor.execute("SELECT COUNT(*) FROM outros_times")
+    if cursor.fetchone()[0] == 0 and OUTROS_TIMES_RIO:
+        for t in OUTROS_TIMES_RIO:
+            cursor.execute('''
+                INSERT INTO outros_times (id, nome, estadio, tecnico, titulos)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (t['id'], t['nome'], t['estadio'], t['tecnico'], t['titulos']))
+
+    # Vôlei
+    cursor.execute("SELECT COUNT(*) FROM volei")
+    if cursor.fetchone()[0] == 0 and VOLEI_TIMES:
+        for v in VOLEI_TIMES:
+            cursor.execute('''
+                INSERT INTO volei (id, nome, cidade, ginasio, titulos)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (v['id'], v['nome'], v['cidade'], v['ginasio'], v['titulos']))
+
+    # Handebol
+    cursor.execute("SELECT COUNT(*) FROM handebol")
+    if cursor.fetchone()[0] == 0 and HANDEBOL_TIMES:
+        for h in HANDEBOL_TIMES:
+            cursor.execute('''
+                INSERT INTO handebol (id, nome, cidade, ginasio, titulos)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (h['id'], h['nome'], h['cidade'], h['ginasio'], h['titulos']))
 
     # Brasileirão
     cursor.execute("SELECT COUNT(*) FROM brasileirao")
@@ -191,11 +230,11 @@ def populate_db():
     # Carioca
     cursor.execute("SELECT COUNT(*) FROM carioca")
     if cursor.fetchone()[0] == 0 and CARIOCA:
-        for c in CARIOCA:
+        for ca in CARIOCA:
             cursor.execute('''
                 INSERT INTO carioca (pos, time, pontos)
                 VALUES (?, ?, ?)
-            ''', (c['pos'], c['time'], c['pontos']))
+            ''', (ca['pos'], ca['time'], ca['pontos']))
 
     # Equipe
     cursor.execute("SELECT COUNT(*) FROM equipe")
@@ -234,7 +273,7 @@ def populate_db():
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             ''', (f['id'], f['projeto'], f['tarefa'], f['responsavel'], f['prazo'], f['status'], f['prioridade']))
 
-    # Agenda (com proteção contra chaves faltantes)
+    # Agenda
     cursor.execute("SELECT COUNT(*) FROM agenda")
     if cursor.fetchone()[0] == 0 and AGENDA:
         for a in AGENDA:
@@ -243,11 +282,11 @@ def populate_db():
                     INSERT INTO agenda (id, data, evento, local, responsavel)
                     VALUES (?, ?, ?, ?, ?)
                 ''', (a['id'], a['data'], a['evento'], a['local'], a['responsavel']))
-            except KeyError as e:
-                print(f"Aviso: item de agenda com chave faltando: {e} - pulando")
+            except KeyError:
+                print(f"Aviso: item de agenda com chave faltando, pulando")
                 continue
 
-    # Escalas (com proteção)
+    # Escalas
     cursor.execute("SELECT COUNT(*) FROM escalas")
     if cursor.fetchone()[0] == 0 and ESCALAS:
         for e in ESCALAS:
@@ -256,11 +295,11 @@ def populate_db():
                     INSERT INTO escalas (id, data, funcao, membro, local)
                     VALUES (?, ?, ?, ?, ?)
                 ''', (e['id'], e['data'], e['funcao'], e['membro'], e['local']))
-            except KeyError as e:
-                print(f"Aviso: item de escala com chave faltando: {e} - pulando")
+            except KeyError:
+                print(f"Aviso: item de escala com chave faltando, pulando")
                 continue
 
-    # Financeiro (chave-valor)
+    # Financeiro
     cursor.execute("SELECT COUNT(*) FROM financeiro")
     if cursor.fetchone()[0] == 0 and MASTER_FINANCEIRO:
         for chave, valor in MASTER_FINANCEIRO.items():
@@ -273,7 +312,6 @@ def populate_db():
     conn.close()
 
 def get_all_data():
-    """Retorna um dicionário com todos os dados do banco."""
     conn = get_connection()
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
@@ -289,6 +327,15 @@ def get_all_data():
     cursor.execute("SELECT * FROM clubes")
     data['esportes'] = [dict(row) for row in cursor.fetchall()]
 
+    cursor.execute("SELECT * FROM outros_times")
+    data['outros_times'] = [dict(row) for row in cursor.fetchall()]
+
+    cursor.execute("SELECT * FROM volei")
+    data['volei'] = [dict(row) for row in cursor.fetchall()]
+
+    cursor.execute("SELECT * FROM handebol")
+    data['handebol'] = [dict(row) for row in cursor.fetchall()]
+
     cursor.execute("SELECT * FROM brasileirao ORDER BY pos")
     data['brasileirao'] = [dict(row) for row in cursor.fetchall()]
 
@@ -300,14 +347,19 @@ def get_all_data():
     for e in equipe:
         if 'projetos' in e and e['projetos']:
             e['projetos'] = e['projetos'].split(',') if e['projetos'] else []
+
     cursor.execute("SELECT * FROM equipamentos")
     equipamentos = [dict(row) for row in cursor.fetchall()]
+
     cursor.execute("SELECT * FROM materiais")
     materiais = [dict(row) for row in cursor.fetchall()]
+
     cursor.execute("SELECT * FROM fluxo")
     fluxo = [dict(row) for row in cursor.fetchall()]
+
     cursor.execute("SELECT * FROM agenda")
     agenda = [dict(row) for row in cursor.fetchall()]
+
     cursor.execute("SELECT * FROM escalas")
     escalas = [dict(row) for row in cursor.fetchall()]
 
@@ -373,10 +425,8 @@ def registrar_log(usuario, acao, tabela, item_id=None, dados=None):
     conn.commit()
     conn.close()
 
-# Inicialização do banco e criação da tabela de logs
 if not os.path.exists(DB_PATH):
     init_db()
     populate_db()
 else:
-    # Apenas cria a tabela de logs se não existir
     init_logs_table()

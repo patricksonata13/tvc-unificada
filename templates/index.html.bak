@@ -9,15 +9,12 @@
 </head>
 <body>
     <header>
-        <div class="logo">
-            <span class="logo-icon">🌊</span>
-            <h1>TVC</h1>
-        </div>
-        <p>Plataforma Unificada · Rio de Janeiro</p>
+        <h1>📺 TVC - Plataforma Unificada</h1>
+        <p>Todos os módulos em um só lugar</p>
         {% if not logged_in %}
-            <a href="/login" style="color: var(--cor-texto); text-decoration: none; font-weight: 500;">Login</a>
+            <a href="/login" style="color: white; text-decoration: underline;">Login</a>
         {% else %}
-            <span style="color: var(--cor-texto-claro);">Olá, <strong>{{ current_user.id }}</strong> · <a href="/admin" style="color: var(--cor-texto); text-decoration: none;">Admin</a> · <a href="/logout" style="color: var(--cor-texto); text-decoration: none;">Sair</a></span>
+            <span>Olá, <strong>{{ current_user.id }}</strong> | <a href="/admin" style="color: white; text-decoration: underline;">Admin</a> | <a href="/logout" style="color: white; text-decoration: underline;">Sair</a></span>
         {% endif %}
     </header>
 
