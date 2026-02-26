@@ -264,3 +264,13 @@ if __name__ == '__main__':
     print("="*60)
     app.run(debug=True, 
 host='0.0.0.0', port=port)
+
+# Rota temporária para popular o banco (remover após uso)
+@app.route('/seed')
+def seed():
+    try:
+        from database import populate_db
+        populate_db()
+        return "Banco populado com sucesso!"
+    except Exception as e:
+        return f"Erro: {e}"
