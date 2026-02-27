@@ -275,12 +275,3 @@ def seed():
     except Exception as e:
         return f"Erro: {e}"
 
-# Rota temporária para popular o banco (remover após uso)
-@app.route('/seed')
-def seed():
-    try:
-        from database import populate_db
-        populate_db()
-        return "Banco populado com sucesso!"
-    except Exception as e:
-        return f"Erro: {e}"
