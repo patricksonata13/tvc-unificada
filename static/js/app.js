@@ -13,7 +13,7 @@ let loggedIn = false;
 const botoesModulo = document.querySelectorAll('.modulo-btn');
 const conteudoModulo = document.getElementById('conteudo-modulo');
 
-// Verifica se o usuário está logado via meta tag
+// Verifica login
 const metaLogged = document.querySelector('meta[name="logged-in"]');
 if (metaLogged) {
     loggedIn = metaLogged.content === 'true';
@@ -34,7 +34,9 @@ function updateHash(modulo, subAba = '') {
 }
 
 async function iniciar() {
+    console.log('Iniciando...');
     dadosCompletos = await carregarDados();
+    console.log('Dados recebidos:', dadosCompletos);
     if (!dadosCompletos) {
         conteudoModulo.innerHTML = '<p class="loading">Erro ao carregar dados.</p>';
         return;
@@ -55,6 +57,7 @@ async function iniciar() {
 }
 
 function exibirModulo(modulo, subAba = null) {
+    console.log('Exibindo módulo:', modulo, 'subAba:', subAba);
     if (!dadosCompletos) return;
 
     let html = '';
@@ -79,8 +82,8 @@ function exibirModulo(modulo, subAba = null) {
     }
 
     conteudoModulo.innerHTML = html;
+    console.log('HTML injetado para', modulo);
 
-    // Anexa eventos de sub-aba (apenas para módulos que têm sub-abas)
     if (modulo === 'jornalismo' && dadosCompletos.jornalismo) {
         attachSubAbasJornalismo(dadosCompletos.jornalismo);
         if (subAba) {
