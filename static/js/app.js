@@ -19,6 +19,15 @@ if (metaLogged) {
     loggedIn = metaLogged.content === 'true';
 }
 
+function log(mensagem) {
+    console.log(mensagem);
+    // Opcional: também exibir na tela? Vamos manter apenas console por enquanto.
+}
+
+function mostrarStatus(texto) {
+    conteudoModulo.innerHTML = `<p>${texto}</p>`;
+}
+
 function parseHash() {
     const hash = window.location.hash.slice(1);
     if (!hash) return { modulo: 'escaleta', subAba: null };
@@ -39,7 +48,6 @@ function mostrarErro(mensagem, erro, dados) {
         <strong>ERRO:</strong> ${mensagem}<br>
         <pre style="white-space: pre-wrap;">${erro.stack || erro}</pre>
     </div>`;
-    // Fallback: exibe os dados brutos
     if (dados) {
         html += `<pre style="background:#f4f4f4; padding:1rem; overflow:auto;">${JSON.stringify(dados, null, 2)}</pre>`;
     }
@@ -47,16 +55,21 @@ function mostrarErro(mensagem, erro, dados) {
 }
 
 async function iniciar() {
+    mostrarStatus('Iniciando...');
     try {
+        log('Chamando carregarDados()');
         dadosCompletos = await carregarDados();
+        log('Dados recebidos');
         if (!dadosCompletos) {
             mostrarErro('Dados vazios', 'A API retornou null ou vazio', null);
             return;
         }
+        log('Dados: ' + JSON.stringify(dadosCompletos).substring(0, 100) + '...');
 
         const { modulo, subAba } = parseHash();
         moduloAtivo = modulo;
         subAbaAtiva = subAba;
+        log(`Módulo ativo: ${modulo}, subAba: ${subAba}`);
 
         botoesModulo.forEach(btn => {
             btn.classList.remove('ativo');
@@ -67,14 +80,18 @@ async function iniciar() {
 
         exibirModulo(moduloAtivo, subAbaAtiva);
     } catch (e) {
+        log('Erro no iniciar: ' + e.message);
         mostrarErro('Falha ao carregar dados', e, null);
     }
 }
 
 function exibirModulo(modulo, subAba = null) {
-    if (!dadosCompletos) return;
-
+    if (!dadosCompletos) {
+        mostrarErro('dadosCompletos é null', new Error('dados não carregados'), null);
+        return;
+    }
     try {
+        log(`Renderizando módulo ${modulo}`);
         let html = '';
         switch (modulo) {
             case 'escaleta':
@@ -95,8 +112,8 @@ function exibirModulo(modulo, subAba = null) {
             default:
                 html = '<p>Módulo não encontrado.</p>';
         }
-
         conteudoModulo.innerHTML = html;
+        log('HTML injetado');
 
         // Anexa eventos de sub‑aba
         if (modulo === 'jornalismo' && dadosCompletos.jornalismo) {
@@ -121,6 +138,7 @@ function exibirModulo(modulo, subAba = null) {
             }
         }
     } catch (e) {
+        log('Erro ao renderizar: ' + e.message);
         mostrarErro(`Erro ao renderizar módulo ${modulo}`, e, dadosCompletos);
     }
 }
