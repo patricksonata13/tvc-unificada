@@ -1,3 +1,11 @@
+// ============================================
+// TESTE: Mensagem imediata
+// ============================================
+document.body.innerHTML = '<h1 style="color: blue; text-align: center;">JavaScript carregado! (teste)</h1>';
+
+// ============================================
+// Código original com logs
+// ============================================
 import { carregarDados } from './api.js';
 import { renderEscaleta } from './renderizadores/escaleta.js';
 import { renderJornalismo, attachSubAbasJornalismo } from './renderizadores/jornalismo.js';
